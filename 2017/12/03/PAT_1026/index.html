@@ -1,19 +1,8 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="hold my heart"><title>PAT TableTennis(30) | Hengliy_Space</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">PAT TableTennis(30)</h1><a id="logo" href="/.">Hengliy_Space</a><p class="description">happy codeing for futrue and myslef</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 我的GitHub</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">PAT TableTennis(30)</h1><div class="post-meta">Dec 3, 2017<span> | </span><span class="category"><a href="/categories/code/">code</a></span></div><div class="post-content"><p>PAT TableTennis(30)</p>
 <p>一个乒乓球俱乐部有N张桌子可供公众使用。这些表从1到n被编号为任意一对，如果有一些球台在它们到达时是空的，它们将被分配到可用的最小编号的球台上。如果所有的表都被占用，它们将不得不在队列中等待。假设每一对球员最多能踢2个小时。<br>你的任务是计算排队等待时间的每个人，以及每一张桌子上的玩家的数量。<br>让这个过程有点复杂的一点是，俱乐部为他们的VIP成员保留了一些桌子。当VIP桌字空闲时，排在队伍中的第一对贵宾将会有特权。然而，如果队伍中没有贵宾，那么普通队员就可以接受。另一方面，如果有VIP但是没有VIP桌子，那么VIP就作为普通队员看待。</p>
 <p><strong><em>输入</em></strong><br>对于每一种情况，第一行包含一个整数N(小于=10000)-玩家总数的总数。然后N行，每一个都包含2次和VIP标签:HH:MM:到达时间，P-在几分钟的时间里玩的时间，和标签-如果他们有VIP卡，如果没有的话，是1。俱乐部开放时间是在08:00:00至21:00:00之间。假设没有两个客户同时到达。根据玩家的信息，有两个正整数:K(小于=100)-球桌的数量，M(小于K)-贵宾球桌的数量。最后一行包含M个贵宾球桌号。</p>
-<pre><code>9
-20:52:00 10 0
-08:00:00 20 0
-08:02:00 30 0
-20:51:00 10 0
-08:10:00 5 0
-08:12:00 10 1
-20:50:00 10 0
-08:01:30 15 1
-20:53:00 10 1
-3 1
-2
-</code></pre><p><strong><em>输出</em></strong><br>对于每个测试用例，首先打印到达时间、服务时间和等待时间，并以样例显示的格式为每一对参与者等待时间。然后在一行中打印出每个表所提供的播放器的数量。请注意，输出必须按照服务时间的时间顺序列出。等待时间必须被四舍五入到整数分钟(s)。如果在截止时间前不能得到一张表，他们的信息就不能被打印出来。</p>
+<p>  9<br>  20:52:00 10 0<br>  08:00:00 20 0<br>  08:02:00 30 0<br>  20:51:00 10 0<br>  08:10:00 5 0<br>  08:12:00 10 1<br>  20:50:00 10 0<br>  08:01:30 15 1<br>  20:53:00 10 1<br>  3 1<br>  2</p>
+<p><strong><em>输出</em></strong><br>对于每个测试用例，首先打印到达时间、服务时间和等待时间，并以样例显示的格式为每一对参与者等待时间。然后在一行中打印出每个表所提供的播放器的数量。请注意，输出必须按照服务时间的时间顺序列出。等待时间必须被四舍五入到整数分钟(s)。如果在截止时间前不能得到一张表，他们的信息就不能被打印出来。</p>
 <pre><code>08:00:00 08:00:00 0
 08:01:30 08:01:30 0
 08:02:00 08:02:00 0
