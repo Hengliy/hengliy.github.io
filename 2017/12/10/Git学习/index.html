@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="hold my heart"><title>Git学习 | Hengliy_Space</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/7.0.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Git学习</h1><a id="logo" href="/.">Hengliy_Space</a><p class="description">happy codeing for futrue and myslef</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 我的GitHub</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Git学习</h1><div class="post-meta">Dec 10, 2017<span> | </span><span class="category"><a href="/categories/折腾日记/">折腾日记</a></span></div><div class="post-content"><p>刚考完试，闲来折腾下Git，之前做虚拟机那个项目的时候和海哥因为被田老师催着交作品，四个人就采用U盘拷贝的方式进行版本管理，效率低不说，最后也不清楚谁的电脑上的是最新的版本了，最后甚至自己负责的部分都搞乱了，就意识到了版本控制的必要性，甚至真是有重构的可能啊！特别是小组协作的时候，必须的啊！</p>
-<p>Git简介：<br>linux的开发过程中的版本控制在初期的时候就是linus自己人工合并的，后期linux内核的代码库之大让linus很难继续手动管理了，这时候linus花了两周时间用C写了一个分布式版本控制系统，就是Git！</p>
+<h2 id="Git简介："><a href="#Git简介：" class="headerlink" title="Git简介："></a>Git简介：</h2><p>linux的开发过程中的版本控制在初期的时候就是linus自己人工合并的，后期linux内核的代码库之大让linus很难继续手动管理了，这时候linus花了两周时间用C写了一个分布式版本控制系统，就是Git！</p>
 <p>Git是目前世界上最先进的分布式版本控制系统（没有之一）。</p>
 <p>1、安装Git<br>$ sudo apt-get install git</p>
 <p>2、在安装了git之后要先输入这个命令。指这台机器的名字<br>$ git config –global user.name “Your Name”<br>$ git config –global user.email “email@example.com”</p>
@@ -14,7 +14,7 @@
 <p>14、将本地仓库与远程的仓库关联，远程库的名字本地保存就是“origin”（这里用的是github上的仓库，也可以自己搭建一个哦）<br>git remote -v查看远程库信息，如果有两个远程库可以把origin和后边的仓库换成不同的名字方便记忆啊<br>$ git remote add github git@github.com:michaelliao/learngit.git<br>$ git remote add gitee git@gitee.com:Hengliy/myproject.git</p>
 <p>15、把本地库（master分支）推送到远程库上<br>第一次推送<br>$ git push -u origin master<br>之后推送<br>$ git push origin master</p>
 <p>16、克隆项目到本地<br>（一起从零协作一个项目的时候可以先在Git服务器（github网站）上创建一个仓库，然后小组成员一起clone下来开始开发）<br>Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快<br>$ git clone <a href="https://github.com/Hengliy/myproject" target="_blank" rel="noopener">https://github.com/Hengliy/myproject</a> （速度慢）<br>$ git clone <a href="https://github.com/Hengliy/myproject.git" target="_blank" rel="noopener">https://github.com/Hengliy/myproject.git</a><br>$ git clone git@github.com:Hengliy/myproject.git</p>
-<p>###分支<br>建议用分支开发！（？？？分支才是每个人的进度？？？）<br>17、创建dev分支<br>$ git branch dev</p>
+<h2 id="开发进度分支"><a href="#开发进度分支" class="headerlink" title="开发进度分支"></a>开发进度分支</h2><p>建议用分支开发！（？？？分支才是每个人的进度？？？）<br>17、创建dev分支<br>$ git branch dev</p>
 <p>18、切换分支<br>$ git checkout dev</p>
 <p>17、创建并切换到dev分支<br>$ git checkout -b dev</p>
 <p>18、列出所有分支，当前分支前面会标一个*号<br>$ git branch</p>
@@ -22,14 +22,13 @@
 <p>20、删除分支<br>$ git branch -d dev</p>
 <p>21、善于创建新的分支来修复bug<br>$ git stash //存储现场<br>$ git stash pop //恢复现场</p>
 <p>22、丢弃一个使用了，但是没有合并的分支要强行删除<br>$ git branch -D <name></name></p>
-<p>###多人协作</p>
-<p>1&gt;可以试图用git push origin branch-name推送自己的修改；</p>
+<h2 id="多人协作"><a href="#多人协作" class="headerlink" title="多人协作"></a>多人协作</h2><p>1&gt;可以试图用git push origin branch-name推送自己的修改；</p>
 <p>2&gt;如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；</p>
 <p>3&gt;如果合并有冲突，则解决冲突，并在本地提交；</p>
 <p>4&gt;没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！</p>
 <p>5&gt;如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch –set-upstream branch-name origin/branch-name。</p>
 <p>6&gt;这就是多人协作的工作模式，一旦熟悉了，就非常简单。</p>
-<p>###打标签<br>打标签就是为前面说的commit—id重新起个好记的名字</p>
+<h2 id="打标签"><a href="#打标签" class="headerlink" title="打标签"></a>打标签</h2><p>打标签就是为前面说的commit—id重新起个好记的名字</p>
 <p>1、在当前分支时刻打标签<br>$ git tag v1.0</p>
 <p>2、为6224937这个commit打标签为0.9<br>$ git tag v0.9 6224937 </p>
 <p>3、指定标签信息<br>$ git tag -a v0.9 -m “修改了文件系统自省的bug”</p>
@@ -37,10 +36,10 @@
 <p>4、查看详细信息<br>$ git show v0.9</p>
 <p>5、删除标签<br>$ git tag -d v0.9</p>
 <p>6、标签推送到远程<br>$ git push origin v0.9</p>
-<p>###忽略特殊文件<br>工作区的根目录下有个.gitignore文件，在提交的时候会自动忽略 文件内的东西。可以自己配置这个文件（<a href="https://github.com/github/gitignore），也可以自己写。" target="_blank" rel="noopener">https://github.com/github/gitignore），也可以自己写。</a><br>1、文件中写*.so<br>会自动忽略.so后缀的文件上传</p>
-<p>###Github协作开源项目<br>1&gt;先Fork一个项目到自己的github上<br>2&gt;git clone到本地<br>3&gt;本地开发后，提交到自己的仓库上<br>4&gt;希望项目的官方能接受你的修改，就可以在GitHub上发起一个pull request，等待同意接受你的修改</p>
-<p>###自定义修改<br>1、显示颜色<br>$ git config –global color.ui true<br>2、自定义命令缩写 status-&gt;st<br>$ git config –global alias.st status<br>高级自定义！<br>$ git config –global alias.lg “log –color –graph –pretty=format:’%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset’ –abbrev-commit”<br>3、配置Git的时候，加上–global是针对当前用户起作用的，如果不加，那只针对当前的仓库起作用。<br>1&gt;每个仓库的Git配置文件都放在.git/config文件中<br>2&gt;当前用户的Git配置文件放在用户主目录下的一个隐藏文件.gitconfig</p>
-<p>###搭建Git服务器<br>1、安装git：<br>$ sudo apt-get install git</p>
+<h2 id="忽略特殊文件"><a href="#忽略特殊文件" class="headerlink" title="忽略特殊文件"></a>忽略特殊文件</h2><p>工作区的根目录下有个.gitignore文件，在提交的时候会自动忽略 文件内的东西。可以自己配置这个文件（<a href="https://github.com/github/gitignore），也可以自己写。" target="_blank" rel="noopener">https://github.com/github/gitignore），也可以自己写。</a><br>1、文件中写*.so<br>会自动忽略.so后缀的文件上传</p>
+<h2 id="Github协作开源项目"><a href="#Github协作开源项目" class="headerlink" title="Github协作开源项目"></a>Github协作开源项目</h2><p>1&gt;先Fork一个项目到自己的github上<br>2&gt;git clone到本地<br>3&gt;本地开发后，提交到自己的仓库上<br>4&gt;希望项目的官方能接受你的修改，就可以在GitHub上发起一个pull request，等待同意接受你的修改</p>
+<h2 id="自定义修改"><a href="#自定义修改" class="headerlink" title="自定义修改"></a>自定义修改</h2><p>1、显示颜色<br>$ git config –global color.ui true<br>2、自定义命令缩写 status-&gt;st<br>$ git config –global alias.st status<br>高级自定义！<br>$ git config –global alias.lg “log –color –graph –pretty=format:’%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset’ –abbrev-commit”<br>3、配置Git的时候，加上–global是针对当前用户起作用的，如果不加，那只针对当前的仓库起作用。<br>1&gt;每个仓库的Git配置文件都放在.git/config文件中<br>2&gt;当前用户的Git配置文件放在用户主目录下的一个隐藏文件.gitconfig</p>
+<h2 id="搭建Git服务器"><a href="#搭建Git服务器" class="headerlink" title="搭建Git服务器"></a>搭建Git服务器</h2><p>1、安装git：<br>$ sudo apt-get install git</p>
 <p>2、创建一个git用户，用来运行git服务：<br>$ sudo adduser git</p>
 <p>3、创建证书登录：<br>收集所有需要登录的用户的公钥，就是他们自己的id_rsa.pub文件，把所有公钥导入到/home/git/.ssh/authorized_keys文件里，一行一个。（人多的话还可以使用Gitosis来管理公钥）</p>
 <p>4、初始化Git仓库：<br>先选定一个目录作为Git仓库，假定是/srv/sample.git，在/srv目录下输入命令：<br>$ sudo git init –bare sample.git<br>Git就会创建一个裸仓库，裸仓库没有工作区，因为服务器上的Git仓库纯粹是为了共享，所以不让用户直接登录到服务器上去改工作区，并且服务器上的Git仓库通常都以.git结尾。然后，把owner改为git：<br>$ sudo chown -R git:git sample.git</p>
