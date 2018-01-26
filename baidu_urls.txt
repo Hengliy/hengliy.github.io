@@ -1,1 +1,1 @@
-http://hengliy.github.io/2018/01/25/cmake学习/
+http://hengliy.github.io/2018/01/26/LINUX常用命令/
