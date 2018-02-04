@@ -1,1 +1,1 @@
-http://hengliy.github.io/2018/01/26/LINUX常用命令/
+http://hengliy.github.io/2018/01/31/刷题常用函数/
