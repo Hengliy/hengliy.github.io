@@ -7,11 +7,21 @@
 
 <html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8"/ >
+<script>
+    (function(){
+        if(''){
+            if (prompt('please entry article password') !== ''){
+                alert('password wrong!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
-
 
 
 
@@ -177,7 +187,7 @@
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta   ">
+  <div class="site-meta ">
     
 
     <div class="custom-logo-site-title">
@@ -471,6 +481,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SECRET/" itemprop="url" rel="index">
+                    <span itemprop="name">secret</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -499,14 +531,10 @@
 
       
         
-          
-          觉得自己不管是关于感情，关于个性，关于性格，都没有自己的看法，每个选择别人对自己影响都太大，自己内心没有一个清晰的选择。关于个性，一直都是在模仿，没有自己的标准。关于性格，感觉也都用下意识的在讲话，模仿别人的性格。关于感情, 对于喜欢没有明确的定义，感觉别人开个玩笑，聊的来就算是喜欢。
-我希望能弄清楚【我是谁】，【我该是什么样子】，【我自己想要什么】。我怕工作后没有时间让我去思考这些，怕永远明确不了自己,一直没有主心骨这样随风摇摆。
-上大学前最想得到的就是这些（想去当兵的一个很重要的原因），然而处在麻木的忙碌中度过了3年。觉得别人的影响还是很大，自己没有一个独立的内心，就像这学期说的那样，能够
-          ...
+          文章访问密码：1234567890
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/02/01/我/#more" rel="contents">
+            <a class="btn" href="/2015/02/01/我/">
               阅读全文 &raquo;
             </a>
           </div>
@@ -609,7 +637,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -620,7 +648,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
