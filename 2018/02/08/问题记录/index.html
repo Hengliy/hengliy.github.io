@@ -117,17 +117,17 @@
 
 
 
-<meta name="description" content="c/c++ 使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork()">
+<meta name="description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="问题记录">
 <meta property="og:url" content="http://hengliy.github.io/2018/02/08/问题记录/index.html">
 <meta property="og:site_name" content="Hengliy_Space">
-<meta property="og:description" content="c/c++ 使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”，则输出缓冲">
+<meta property="og:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-09T06:06:34.815Z">
+<meta property="og:updated_time" content="2018-02-10T16:28:14.471Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="问题记录">
-<meta name="twitter:description" content="c/c++ 使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”，则输出缓冲">
+<meta name="twitter:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里">
 
 
 
@@ -357,7 +357,8 @@
       
 
       
-        <h2 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h2><ol>
+        <h2 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h2><p>this指针，静态，复合，委托，继承，虚函数<br>迭代器，分配器， </p>
+<ol>
 <li>使用初始化列表</li>
 <li>善用const引用</li>
 <li></li>
@@ -370,41 +371,6 @@
 <p>fork();<br>1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。<br>2.如果printf函数最后没有”\n”，则输出缓冲区不会被立即清空，而fork函数会把输出缓冲区里的内容也都复制到子进程里。<br>所以，父进程和子进程各输出2个Hello，共4个。<br>如果第一个printf(“Hello”);写成printf(“Hello\n”);，则只会输出3个Hello，父进程2个，子进程1个。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;<span class="comment">//hello输出4次</span></span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">"Hello"</span>);</span><br><span class="line"> fork();</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">"Hello"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>z = x++ - –y <em> b/a;<br>上面这个式子，在C中其实是理解成 z = ((x++)–)-y </em> b / a;<br>所以其实是z = ((5++)–)-(-10)<em>2/4 = 5-(-5) = 10;<br>大家不要被题目故意留的空格迷惑了，编译器是不会理那些空格的，它看起来就是z=x++—y</em>b/a，而C语言读取符号时的词法分析遵循的规则叫“贪心法”，就它读取每一个符号都尽量包括多的字符，赋值号右边的式子从左往右读，第一个字符“x”，然后它会尝试读下一个字符看“x+”能不能组成一个符号，若不行，则读下一个字符，尝试“++”能不能组成一个符号，显然可以，然后再接着往下读“-”，尝试下一个字符“-”，发现“–”也能组成一个字符。<br>所以上式它会读成   z = ((x++)–)-y * b / a;</p>
-<blockquote>
-<p>构造函数放在private区 （Singleton）</p>
-<p>相同class的各个objects互为friends</p>
-<p>任何成员函数都有个隐藏的参数是  this</p>
-<p> 临时对象 return class(int x,int y); 不能用引用接受</p>
-</blockquote>
-<hr>
-<blockquote>
-<p>重载输出运算符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ostream&amp; operator &lt;&lt; (ostream&amp; os,const complex&amp; x)</span><br><span class="line">&#123;</span><br><span class="line">	return os &lt;&lt; &apos;(&apos;&lt;&lt;real(x)&lt;&lt;&apos;,&apos;&lt;&lt;imag(x)&lt;&lt;&apos;)&apos;;//改变os状态</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<hr>
-<blockquote>
-<p>“a+=b”是不申请空间的，直接加给左边的a<br>“a=a+b”是要申请一个新的空间再赋值给a的</p>
-</blockquote>
-<hr>
-<blockquote>
-<p>如果类里面有指针成员变量，必须有拷贝构造函数和拷贝赋值函数，<br>浅拷贝：不写拷贝构造函数，只复制指针，指向的区域没有变<br>深拷贝：拷贝构造函数，整个指针指向的值的区域都复制</p>
-</blockquote>
-<p><strong>拷贝构造</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span></span><br><span class="line">String::String(<span class="keyword">const</span> String&amp; str)</span><br><span class="line">&#123;</span><br><span class="line">   m_data = <span class="keyword">new</span> <span class="keyword">char</span>[ <span class="built_in">strlen</span>(str.m_data) + <span class="number">1</span> ];</span><br><span class="line">   <span class="built_in">strcpy</span>(m_data, str.m_data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>拷贝赋值</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span></span><br><span class="line">String&amp; String::<span class="keyword">operator</span>=(<span class="keyword">const</span> String&amp; str)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">if</span> (<span class="keyword">this</span> == &amp;str)<span class="comment">//检测自我赋值，不用进行下面的操作          </span></span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">delete</span>[] m_data;</span><br><span class="line">   m_data = <span class="keyword">new</span> <span class="keyword">char</span>[ <span class="built_in">strlen</span>(str.m_data) + <span class="number">1</span> ];</span><br><span class="line">   <span class="built_in">strcpy</span>(m_data, str.m_data);</span><br><span class="line">   <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h2 id="new-delete"><a href="#new-delete" class="headerlink" title="new/delete"></a>new/delete</h2><p><strong> Complex* pc=new Complex(1,2); </strong>               </p>
-<blockquote>
-<p>void<em> mem=operator new(sizeof(Complex));    //调用malloc分配内存<br>pc=static_cast&lt;complex</em>&gt;(mem);              //转型<br>pc-&gt;Complex::Complex(1,2);                  //构造函数</p>
-</blockquote>
-<p><strong> delete pc; </strong></p>
-<blockquote>
-<p>Complex::~Complex(pc);   //析构函数<br>operator delete(pc);     //调用free(pc),释放内存</p>
-</blockquote>
-<hr>
-<blockquote>
-<p>复合的class，构造函数由内而外，析构函数由外而内</p>
-</blockquote>
-<hr>
-<p>&gt;</p>
 
       
     </div>
@@ -424,7 +390,7 @@
   <p><span>本文标题:</span><a href="/2018/02/08/问题记录/">问题记录</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2018年02月08日 - 22:02</p>
-  <p><span>最后更新:</span>2018年02月09日 - 14:02</p>
+  <p><span>最后更新:</span>2018年02月11日 - 00:02</p>
   <p><span>原始链接:</span><a href="/2018/02/08/问题记录/" title="问题记录">http://hengliy.github.io/2018/02/08/问题记录/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/02/08/问题记录/"  aria-label="复制成功！"></i></span>
   </p>
@@ -624,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-c"><span class="nav-number">1.</span> <span class="nav-text">c/c++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new-delete"><span class="nav-number">2.</span> <span class="nav-text">new/delete</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-c"><span class="nav-number">1.</span> <span class="nav-text">c/c++</span></a></li></ol></div>
             
 
           </div>

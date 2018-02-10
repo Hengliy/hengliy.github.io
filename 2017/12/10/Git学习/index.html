@@ -125,7 +125,7 @@
 <meta property="og:site_name" content="Hengliy_Space">
 <meta property="og:description" content="刚考完试，闲来折腾下Git，之前做虚拟机那个项目的时候和海哥因为被田老师催着交作品，四个人就采用U盘拷贝的方式进行版本管理，效率低不说，最后也不清楚谁的电脑上的是最新的版本了，最后甚至自己负责的部分都搞乱了，就意识到了版本控制的必要性，甚至真是有重构的可能啊！特别是小组协作的时候，必须的啊！ 参考网站：http://iissnan.com/progit/ Git简介：linux的开发过程中的版本控">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-24T08:11:52.000Z">
+<meta property="og:updated_time" content="2018-02-09T08:19:04.698Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git学习">
 <meta name="twitter:description" content="刚考完试，闲来折腾下Git，之前做虚拟机那个项目的时候和海哥因为被田老师催着交作品，四个人就采用U盘拷贝的方式进行版本管理，效率低不说，最后也不清楚谁的电脑上的是最新的版本了，最后甚至自己负责的部分都搞乱了，就意识到了版本控制的必要性，甚至真是有重构的可能啊！特别是小组协作的时候，必须的啊！ 参考网站：http://iissnan.com/progit/ Git简介：linux的开发过程中的版本控">
@@ -384,7 +384,8 @@
 <h4 id="参考网站："><a href="#参考网站：" class="headerlink" title="参考网站："></a>参考网站：</h4><p><a href="http://iissnan.com/progit/" target="_blank" rel="noopener">http://iissnan.com/progit/</a></p>
 <h4 id="Git简介："><a href="#Git简介：" class="headerlink" title="Git简介："></a>Git简介：</h4><p>linux的开发过程中的版本控制在初期的时候就是linus自己人工合并的，后期linux内核的代码库之大让linus很难继续手动管理了，这时候linus花了两周时间用C写了一个分布式版本控制系统，就是Git！</p>
 <p>Git是目前世界上最先进的分布式版本控制系统（没有之一）。</p>
-<p>先上常用步骤：<br>正常步骤：</p>
+<p><strong>先上常用步骤：</strong><br>正常步骤：</p>
+<blockquote>
 <ol>
 <li><p>git init //初始化仓库</p>
 </li>
@@ -399,6 +400,7 @@
 <li><p>git push -u origin master //把本地仓库的文件推送到远程仓库</p>
 </li>
 </ol>
+</blockquote>
 <p>1、安装Git<br>$ sudo apt-get install git</p>
 <p>2、在安装了git之后要先输入这个命令。指这台机器的名字<br>$ git config –global user.name “Your Name”<br>$ git config –global user.email “email@example.com”</p>
 <p>3、创建repository（版本库）<br>在我的理解一个版本库就是一个项目，在自己电脑上表示就是一个项目文件夹<br>创建一个文件夹<br>$ mkdir myproject<br>$ cd myproject</p>
