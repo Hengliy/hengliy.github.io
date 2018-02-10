@@ -124,7 +124,7 @@
 <meta property="og:site_name" content="Hengliy_Space">
 <meta property="og:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-10T16:34:26.821Z">
+<meta property="og:updated_time" content="2018-02-10T16:36:38.202Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="问题记录">
 <meta name="twitter:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里">
@@ -410,7 +410,7 @@
 </blockquote>
 <hr>
 <blockquote>
-<p>定义一个二维数组，可以省略第一维的定义，但不能省略第二维的定义。<br>系统根据初始化的数据个数和第2维的长度可以确定第一维的长度。<br>int a[][3]={ 1,2，3，4，5，6};<br>a数组的第一维的定义被省略，初始化数据共6个，第二维的长度为3，即每行3个数，所以a数组的第一维是2。<br>一般，省略第一维的定义时，第一维的大小按如下规则确定：<br>初值个数能被第二维整除，所得的商就是第一维的大小；若不能整除，则第一维的大小为商再加1。例如: int a[][3]={ 1,2,3,4};等价于：int a[2][3]={ 1,2,3,4};<br>若分行初始化，也可以省略第一维的定义。下列的数组定义中有两对{ }，已经表示a数组有两行。</p>
+<p>定义一个二维数组，可以省略第一维的定义，但不能省略第二维的定义。<br>系统根据初始化的数据个数和第2维的长度可以确定第一维的长度。<br>int a[][3]={ 1,2，3，4，5，6};<br>a数组的第一维的定义被省略，初始化数据共6个，第二维的长度为3，即每行3个数，所以a数组的第一维是2。<br>一般，省略第一维的定义时，第一维的大小按如下规则确定：<br>初值个数能被第二维整除，所得的商就是第一维的大小；若不能整除，则第一维的大小为商再加1。例如: int a[][3]={ 1,2,3,4};等价于：int a[2][3]={ 1,2,3,4};</p>
 </blockquote>
 <hr>
 <p>&gt;<br>char <em>strcpy(char</em> dest, const char <em>src)   把从src地址开始且含有NULL结束符的字符串复制到以dest开始的地址空间<br>void </em>memcpy(void <em>dest, const void </em>src, size_t n);    从源src所指的内存地址的起始位置开始拷贝n个字节到目标dest所指的内存地址的起始位置中<br>void <em>memmove( void</em> dest, const void<em> src, size_t count );   由src所指内存区域复制count个字节到dest所指内存区域。<br>void </em>memset(void *s, int ch,  size_t  n);   将s中当前位置后面的n个字节 （typedef unsigned int size_t ）用 ch 替换并返回 s</p>
