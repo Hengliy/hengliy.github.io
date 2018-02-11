@@ -117,17 +117,17 @@
 
 
 
-<meta name="description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp">
+<meta name="description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="问题记录">
 <meta property="og:url" content="http://hengliy.github.io/2018/02/08/问题记录/index.html">
 <meta property="og:site_name" content="Hengliy_Space">
-<meta property="og:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里">
+<meta property="og:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-10T16:36:38.202Z">
+<meta property="og:updated_time" content="2018-02-11T01:34:24.679Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="问题记录">
-<meta name="twitter:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1234int main()&amp;#123;	cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;&amp;#125;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里">
+<meta name="twitter:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”">
 
 
 
@@ -365,7 +365,7 @@
 </ol>
 <p>数组的大小不必在编译时确定</p>
 <blockquote>
-<p>逗号表达式：逗号表达式的结果是其最右边表达式的值<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="number">4</span>,<span class="built_in">cout</span>&lt;&lt;<span class="number">5</span>;<span class="comment">//输出45;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>逗号表达式：逗号表达式的结果是其最右边表达式的值<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="number">4</span>,<span class="built_in">cout</span>&lt;&lt;<span class="number">5</span>;<span class="comment">//输出45;</span></span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <hr>
 <p>fork();<br>1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。<br>2.如果printf函数最后没有”\n”，则输出缓冲区不会被立即清空，而fork函数会把输出缓冲区里的内容也都复制到子进程里。<br>所以，父进程和子进程各输出2个Hello，共4个。<br>如果第一个printf(“Hello”);写成printf(“Hello\n”);，则只会输出3个Hello，父进程2个，子进程1个。</p>
@@ -462,7 +462,7 @@
   <p><span>本文标题:</span><a href="/2018/02/08/问题记录/">问题记录</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2018年02月08日 - 22:02</p>
-  <p><span>最后更新:</span>2018年02月11日 - 00:02</p>
+  <p><span>最后更新:</span>2018年02月11日 - 09:02</p>
   <p><span>原始链接:</span><a href="/2018/02/08/问题记录/" title="问题记录">http://hengliy.github.io/2018/02/08/问题记录/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/02/08/问题记录/"  aria-label="复制成功！"></i></span>
   </p>
