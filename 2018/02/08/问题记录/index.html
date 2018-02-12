@@ -124,7 +124,7 @@
 <meta property="og:site_name" content="Hengliy_Space">
 <meta property="og:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-11T01:34:24.679Z">
+<meta property="og:updated_time" content="2018-02-11T10:45:34.763Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="问题记录">
 <meta name="twitter:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”">
@@ -319,7 +319,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T22:36:39+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-08T22:36:39-05:00">
                 2018-02-08
               </time>
             
@@ -436,6 +436,22 @@
 <p>逻辑与（&amp;&amp;）和逻辑或（||）存在“短路”现象。逻辑运算符||,左侧为非零,右侧就不用判断了</p>
 </blockquote>
 <hr>
+<blockquote>
+<p>c++不允许后加加多次 ++++i（T）;i++++（F）;</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>初始化指针时所创建的字符串常量被定义为只读char* str=”hello”;不能修改里面的字符</p>
+</blockquote>
+<hr>
+<h2 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h2><blockquote>
+<p>7&amp;3+12的值是15 （F）+优先级高于&amp;（按位与）</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>基本类型的对象没有析构函数，所以回收基本类型组成的数组空间用 delete 和 delete[] 都是应该可以的；但是对于类对象数组，只能用 delete[]。对于 new 的单个对象，只能用 delete 不能用 delete[] 回收空间。 </p>
+</blockquote>
+<hr>
 <h2 id="explict关键字-（类的强制类型转换）"><a href="#explict关键字-（类的强制类型转换）" class="headerlink" title="explict关键字 （类的强制类型转换）"></a>explict关键字 （类的强制类型转换）</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Fraction(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="comment">//不用定义返回值。</span></span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">double</span>)(m_numberator/m_denominator);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line"><span class="keyword">double</span> d=<span class="number">4</span>+f;<span class="comment">//会自动强制类型转换，因为定义了double的重载</span></span><br></pre></td></tr></table></figure>
 <p><strong>non-explicit-one-argument ctor</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Fraction(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	Fraction <span class="keyword">operator</span> + (<span class="keyword">const</span> Fraction&amp; f)&#123;</span><br><span class="line">		<span class="keyword">return</span> Fraction(...);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">Fraction d=f+<span class="number">4</span>;<span class="comment">//调用构造函数将4转换成Fraction(4,1);然后调用operator+</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>explicit</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">explicit</span> <span class="title">Fraction</span><span class="params">(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><span class="comment">//加入关键字</span></span></span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	Fraction <span class="keyword">operator</span> + (<span class="keyword">const</span> Fraction&amp; f)&#123;</span><br><span class="line">		<span class="keyword">return</span> Fraction(...);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">Fraction d=f+<span class="number">4</span>;<span class="comment">//【Error】 不能转换</span></span><br></pre></td></tr></table></figure></p>
@@ -443,6 +459,12 @@
 <h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">clss</span> <span class="title">shared_ptr</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">shared_ptr</span>(T* p):px(p) &#123;&#125;</span><br><span class="line">	T&amp; <span class="keyword">operator</span>*() <span class="keyword">const</span></span><br><span class="line">		&#123; <span class="keyword">return</span> * px;&#125;</span><br><span class="line">	T* <span class="keyword">operator</span>-&gt;() <span class="keyword">const</span></span><br><span class="line">		&#123; <span class="keyword">return</span> px;&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	T* px;</span><br><span class="line">	<span class="keyword">long</span>* pn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <h2 id="STL"><a href="#STL" class="headerlink" title="STL"></a>STL</h2><p>C++ STL 的实现：<br>1.vector  底层数据结构为数组 ，支持快速随机访问<br>2.list    底层数据结构为双向链表，支持快速增删<br>3.deque   底层数据结构为一个中央控制器和多个缓冲区，详细见STL源码剖析P146，支持首尾（中间不能）快速增删，也支持随机访问<br>4.stack   底层一般用23实现，封闭头部即可，不用vector的原因应该是容量大小有限制，扩容耗时<br>5.queue   底层一般用23实现，封闭头部即可，不用vector的原因应该是容量大小有限制，扩容耗时<br>6.45是适配器,而不叫容器，因为是对容器的再封装<br>7.priority_queue 的底层数据结构一般为vector为底层容器，堆heap为处理规则来管理底层容器实现<br>8.set       底层数据结构为红黑树，有序，不重复<br>9.multiset  底层数据结构为红黑树，有序，可重复<br>10.map      ﻿﻿﻿﻿底层数据结构为红黑树，有序，不重复<br>11.multimap 底层数据结构为红黑树，有序，可重复<br>12.hash_set(unordered_set) ﻿﻿﻿﻿底层数据结构为hash表，无序，不重复<br>13.hash_multiset(unordered_multiset) 底层数据结构为hash表，无序，可重复<br>14.hash_map(unordered_map)      ﻿﻿﻿﻿底层数据结构为hash表，无序，不重复<br>15.hash_multimap(unordered_multimap) 底层数据结构为hash表，无序，可重复 </p>
+<hr>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p> volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素更改，比如：操作系统、硬件或者其它线程等。遇到这个关键字声明的变量，编译器对访问该变量的代码就不再进行优化，从而可以提供对特殊地址的稳定访问。声明时语法：int volatile vInt; 当要求使用 volatile 声明的变量的值的时候，系统总是重新从它所在的内存读取数据，即使它前面的指令刚刚从该处读取过数据。而且读取的数据立刻被保存。例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="keyword">int</span> i=<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> a = i;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 其他代码，并未明确告诉编译器，对 i 进行过操作</span></span><br><span class="line"><span class="keyword">int</span> b = i;</span><br></pre></td></tr></table></figure></p>
+<p>volatile 指出 i 是随时可能发生变化的，每次使用它的时候必须从 i的地址中读取，因而编译器生成的汇编代码会重新从i的地址读取数据放在 b 中。而优化做法是，由于编译器发现两次从 i读数据的代码之间的代码没有对 i 进行过操作，它会自动把上次读的数据放在 b 中。而不是重新从 i 里面读。这样以来，如果 i是一个寄存器变量或者表示一个端口数据就容易出错，所以说 volatile 可以保证对特殊地址的稳定访问。</p>
+<hr>
+<h2 id="virtual"><a href="#virtual" class="headerlink" title="virtual"></a>virtual</h2><p><strong>虚函数</strong></p>
+<p><strong>纯虚函数</strong><br>纯虚函数格式：virtual &lt;类型&gt; &lt;函数名&gt; (&lt;参数表&gt;) = 0;纯虚函数要以=0 结尾，并且virtual 放在最前面</p>
 
       
     </div>
@@ -462,7 +484,7 @@
   <p><span>本文标题:</span><a href="/2018/02/08/问题记录/">问题记录</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2018年02月08日 - 22:02</p>
-  <p><span>最后更新:</span>2018年02月11日 - 09:02</p>
+  <p><span>最后更新:</span>2018年02月11日 - 05:02</p>
   <p><span>原始链接:</span><a href="/2018/02/08/问题记录/" title="问题记录">http://hengliy.github.io/2018/02/08/问题记录/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/02/08/问题记录/"  aria-label="复制成功！"></i></span>
   </p>
@@ -511,6 +533,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/11/hello-world/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -662,7 +688,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-c"><span class="nav-number">1.</span> <span class="nav-text">c/c++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new-delete"><span class="nav-number">2.</span> <span class="nav-text">new/delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#explict关键字-（类的强制类型转换）"><span class="nav-number">3.</span> <span class="nav-text">explict关键字 （类的强制类型转换）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#智能指针"><span class="nav-number">4.</span> <span class="nav-text">智能指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">5.</span> <span class="nav-text">STL</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-c"><span class="nav-number">1.</span> <span class="nav-text">c/c++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new-delete"><span class="nav-number">2.</span> <span class="nav-text">new/delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运算符优先级"><span class="nav-number">3.</span> <span class="nav-text">运算符优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#explict关键字-（类的强制类型转换）"><span class="nav-number">4.</span> <span class="nav-text">explict关键字 （类的强制类型转换）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#智能指针"><span class="nav-number">5.</span> <span class="nav-text">智能指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">6.</span> <span class="nav-text">STL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">7.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#virtual"><span class="nav-number">8.</span> <span class="nav-text">virtual</span></a></li></ol></div>
             
 
           </div>
