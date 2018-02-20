@@ -117,17 +117,17 @@
 
 
 
-<meta name="description" content="/红黑树/数据结构课设选了一个坑的题目： 环境搭了整整三天，一定要写下自己踩的坑！！！">
+<meta name="description" content="数据结构课设选了一个坑的题目： 环境搭了整整三天，一定要写下自己踩的坑！！！ QtforAndroid 在网上很多 下载对应的linux版本即可opencv直接去官网下载最新版，不区分linux与windows因为是跨平台的，跨平台的意思就是这个代码在两边都能打开，但是不能用需要编译解压后直接用cmake编译安装，注意">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Qt&amp;Opencv环境搭建">
 <meta property="og:url" content="http://hengliy.github.io/2017/04/07/QT-OPENCV环境搭建/index.html">
 <meta property="og:site_name" content="Hengliy_Space">
-<meta property="og:description" content="/红黑树/数据结构课设选了一个坑的题目： 环境搭了整整三天，一定要写下自己踩的坑！！！">
+<meta property="og:description" content="数据结构课设选了一个坑的题目： 环境搭了整整三天，一定要写下自己踩的坑！！！ QtforAndroid 在网上很多 下载对应的linux版本即可opencv直接去官网下载最新版，不区分linux与windows因为是跨平台的，跨平台的意思就是这个代码在两边都能打开，但是不能用需要编译解压后直接用cmake编译安装，注意路径一般是/usr/local/，编译时可能会停在一个downloading一个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-14T14:29:42.000Z">
+<meta property="og:updated_time" content="2018-02-20T06:48:37.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Qt&amp;Opencv环境搭建">
-<meta name="twitter:description" content="/红黑树/数据结构课设选了一个坑的题目： 环境搭了整整三天，一定要写下自己踩的坑！！！">
+<meta name="twitter:description" content="数据结构课设选了一个坑的题目： 环境搭了整整三天，一定要写下自己踩的坑！！！ QtforAndroid 在网上很多 下载对应的linux版本即可opencv直接去官网下载最新版，不区分linux与windows因为是跨平台的，跨平台的意思就是这个代码在两边都能打开，但是不能用需要编译解压后直接用cmake编译安装，注意路径一般是/usr/local/，编译时可能会停在一个downloading一个">
 
 
 
@@ -367,8 +367,16 @@
       
 
       
-        <p>/<em>红黑树</em>/<br>数据结构课设选了一个坑的题目：</p>
+        <p>数据结构课设选了一个坑的题目：</p>
 <p>环境搭了整整三天，一定要写下自己踩的坑！！！</p>
+<p>QtforAndroid 在网上很多 下载对应的linux版本即可<br>opencv直接去官网下载最新版，不区分linux与windows因为是跨平台的，跨平台的意思就是这个代码在两边都能打开，但是不能用需要编译<br>解压后直接用cmake编译安装，注意路径一般是/usr/local/，编译时可能会停在一个downloading一个东西，长时间不动的话就是不能自动<br>下载了，需要手动下载并覆盖到opencv下面的一个地址/home/hengliy/opencv-3.2.0/3rdparty/ippicv/downloads/linux<em>*</em> 就好了</p>
+<p>配置环境变量（可选）</p>
+<p>使用时直接在Qt 的pro文件中插入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">INCLUDEPATH += /usr/local/include \</span><br><span class="line">               /usr/local/include/opencv \</span><br><span class="line">               /usr/local/include/opencv2 \</span><br><span class="line"></span><br><span class="line">LIBS += /usr/local/lib/libopencv_highgui.so \</span><br><span class="line">        /usr/local/lib/libopencv_core.so \</span><br><span class="line">        #Notice!this is opencv3-version diffrent with opencv2-version \</span><br><span class="line">        /usr/local/lib/libopencv_imgcodecs.so \</span><br><span class="line">        /usr/local/lib/libopencv_imgproc.so \</span><br><span class="line">        /usr/local/lib/libopencv_calib3d.so \</span><br><span class="line">        /usr/local/lib/libopencv_ml.so \</span><br><span class="line">        /usr/local/lib/libopencv_objdetect.so \</span><br></pre></td></tr></table></figure></p>
+<p>//注意最后必须要加 “ \ ”，并且/usr/local/lib/libopencv_imgcodecs.so \这个是在opencv3版本中使用的，opencv2版本不一样。</p>
+<p>2017.4.3–4.4 14:21</p>
+<p>更新源，/ect/apt/sources.list  +  sudo apt-get update</p>
+<h2 id="linux下qt-不能输入中文："><a href="#linux下qt-不能输入中文：" class="headerlink" title="linux下qt 不能输入中文："></a>linux下qt 不能输入中文：</h2><p>终于解决了，快要哭出来了！<br>找到靠谱的教程很重要啊！</p>
+<p><a href="http://blog.csdn.net/qq_28851503/article/details/52336800" target="_blank" rel="noopener">http://blog.csdn.net/qq_28851503/article/details/52336800</a><br>可能会遇到文章中说的所有问题！<br>问题2.3 缺少 xkbcommon 需要libxkbcommon编译安装<br>如果不能解决参考<a href="http://www.07net01.com/2016/06/1558676.html" target="_blank" rel="noopener">http://www.07net01.com/2016/06/1558676.html</a></p>
 
       
     </div>
@@ -388,7 +396,7 @@
   <p><span>本文标题:</span><a href="/2017/04/07/QT-OPENCV环境搭建/">Qt&Opencv环境搭建</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2017年04月07日 - 09:04</p>
-  <p><span>最后更新:</span>2018年02月14日 - 22:02</p>
+  <p><span>最后更新:</span>2018年02月20日 - 14:02</p>
   <p><span>原始链接:</span><a href="/2017/04/07/QT-OPENCV环境搭建/" title="Qt&Opencv环境搭建">http://hengliy.github.io/2017/04/07/QT-OPENCV环境搭建/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2017/04/07/QT-OPENCV环境搭建/"  aria-label="复制成功！"></i></span>
   </p>
@@ -492,8 +500,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -512,7 +529,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -573,6 +590,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux下qt-不能输入中文："><span class="nav-number">1.</span> <span class="nav-text">linux下qt 不能输入中文：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
