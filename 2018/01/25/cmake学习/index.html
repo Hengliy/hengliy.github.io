@@ -119,14 +119,14 @@
 
 <meta name="description" content="参考：   sewm.pku.edu.cn/src/paradise/reference/CMake%20Practice.pdf https://www.cnblogs.com/ph829/p/4759124.html http://www.hahack.com/codes/cmake/: http://v.youk">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cmake学习">
+<meta property="og:title" content="cmake学习">
 <meta property="og:url" content="http://hengliy.github.io/2018/01/25/cmake学习/index.html">
 <meta property="og:site_name" content="Hengliy_Space">
 <meta property="og:description" content="参考：   sewm.pku.edu.cn/src/paradise/reference/CMake%20Practice.pdf https://www.cnblogs.com/ph829/p/4759124.html http://www.hahack.com/codes/cmake/: http://v.youku.com/v_show/id_XMjc1MjE0MjEwNA==.html">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-15T15:25:44.000Z">
+<meta property="og:updated_time" content="2018-02-20T06:41:42.490Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cmake学习">
+<meta name="twitter:title" content="cmake学习">
 <meta name="twitter:description" content="参考：   sewm.pku.edu.cn/src/paradise/reference/CMake%20Practice.pdf https://www.cnblogs.com/ph829/p/4759124.html http://www.hahack.com/codes/cmake/: http://v.youku.com/v_show/id_XMjc1MjE0MjEwNA==.html">
 
 
@@ -163,7 +163,7 @@
 
 
 
-  <title>Cmake学习 | Hengliy_Space</title>
+  <title>cmake学习 | Hengliy_Space</title>
   
 
 
@@ -317,7 +317,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Cmake学习</h1>
+          <h1 class="post-title" itemprop="name headline">cmake学习</h1>
         
 
         <div class="post-meta">
@@ -416,7 +416,7 @@
 </blockquote>
 <h3 id="LINK-DIRECTORIES"><a href="#LINK-DIRECTORIES" class="headerlink" title="LINK_DIRECTORIES"></a>LINK_DIRECTORIES</h3><p>LINK_DIRECTORIES(directory1 directory2 …)<br>这个指令非常简单，添加非标准的共享库搜索路径，比如，在工程内部同时存在共享库和可执行二进制，在编译时就需要指定一下这些共享库的路径。</p>
 <h3 id="TARGET-LINK-LIBRARIES"><a href="#TARGET-LINK-LIBRARIES" class="headerlink" title="TARGET_LINK_LIBRARIES"></a>TARGET_LINK_LIBRARIES</h3><p>TARGET_LINK_LIBRARIES(target library1<debug |="" optimized=""> library2…)<br>这个指令可以用来为 target 添加需要链接的共享库，本例中是一个可执行文件，但是同样可以用于为自己编写的共享库添加共享库链接。</debug></p>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>VMProber用到wxWidgets|capstone|libvmi库进行关联<br>文件目录<br>VMProber<br>    –src<br>    –include<br>    –build</p>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>VMProber用到<strong>wxWidgets/capstone/libvmi</strong>进行关联<br>文件目录<br>VMProber<br>    –src<br>    –include<br>    –build</p>
 <figure class="highlight cmake"><figcaption><span>CMakeLists.txt</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#指名最小版本号</span></span><br><span class="line"><span class="keyword">CMAKE_MINIMUM_REQUIRED</span>(VERSION <span class="number">2.8</span>) </span><br><span class="line"><span class="comment">#设置项目名称</span></span><br><span class="line"><span class="keyword">PROJECT</span>(VMProber)</span><br><span class="line"><span class="comment">#设置源文件夹</span></span><br><span class="line"><span class="keyword">AUX_SOURCE_DIRECTORY</span>(./src SRC_LIST)</span><br><span class="line"><span class="comment">#关联目标文件</span></span><br><span class="line"><span class="keyword">ADD_EXECUTABLE</span>(VMProber <span class="variable">$&#123;SRC_LIST&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment">##########库##################</span></span><br><span class="line"><span class="comment">#wxWidgets</span></span><br><span class="line"><span class="keyword">FIND_PACKAGE</span>(wxWidgets REQUIRED)</span><br><span class="line"><span class="keyword">INCLUDE</span>(<span class="variable">$&#123;wxWidgets_USE_FILE&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#libvmi</span></span><br><span class="line"><span class="keyword">INCLUDE_DIRECTORIES</span>(/libvmi/libvmi-<span class="number">0.10</span>.<span class="number">1</span> )</span><br><span class="line"><span class="keyword">LINK_DIRECTORIES</span>(/libvmi/libvmi-<span class="number">0.10</span>.<span class="number">1</span>/libvmi/.libs)</span><br><span class="line"></span><br><span class="line"><span class="comment">#capstone</span></span><br><span class="line"><span class="keyword">TARGET_LINK_LIBRARIES</span>(VMProber</span><br><span class="line">                        m glib-<span class="number">2.0</span> dl</span><br><span class="line">                        capstone</span><br><span class="line">                        libvmi.so</span><br><span class="line">                        wx_gtk2u_aui-<span class="number">3.0</span></span><br><span class="line">                        wx_gtk2u_xrc-<span class="number">3.0</span></span><br><span class="line">                        wx_gtk2u_html-<span class="number">3.0</span></span><br><span class="line">                        wx_gtk2u_qa-<span class="number">3.0</span></span><br><span class="line">                        wx_gtk2u_adv-<span class="number">3.0</span></span><br><span class="line">                        wx_gtk2u_core-<span class="number">3.0</span></span><br><span class="line">                        wx_baseu_xml-<span class="number">3.0</span></span><br><span class="line">                        wx_baseu_net-<span class="number">3.0</span></span><br><span class="line">                        wx_baseu-<span class="number">3.0</span> )</span><br><span class="line"><span class="comment">#设置目标文件输出路径，外部编译</span></span><br><span class="line"><span class="keyword">SET</span>(EXECUTABLE_OUTPUT_PATH <span class="string">"$&#123;CMAKE_BINARY_DIR&#125;/bin"</span>)<span class="comment">#CMAKE_BINARY_DIR指编译路径，就是执行cmake的当前路径</span></span><br></pre></td></tr></table></figure>
 
       
