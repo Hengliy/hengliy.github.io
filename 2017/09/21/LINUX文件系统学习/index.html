@@ -106,7 +106,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="linux,文件系统," />
 
 
 
@@ -117,17 +117,23 @@
 
 
 
-<meta name="description" content="参考书：《深入理解Linux内核》，《Linux内核源码剖析》，《Linux内核精解析》链接：   linux文件系统">
+<meta name="description" content="做项目不能太功利了，每次都是现学现卖，项目做完了落得两手空，还是要脚踏实地的学！做项目重在过程而不是结果啊！  参考书：《深入理解Linux内核》，《Linux内核源码剖析》，《Linux内核精解析》  linux虚拟文件系统（VitrulFileSystem）简介VFS只存在于内存中，它在系统启动时被创建，系统关闭时">
+<meta name="keywords" content="linux,文件系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux文件系统学习">
 <meta property="og:url" content="http://hengliy.github.io/2017/09/21/LINUX文件系统学习/index.html">
 <meta property="og:site_name" content="Hengliy_Space">
-<meta property="og:description" content="参考书：《深入理解Linux内核》，《Linux内核源码剖析》，《Linux内核精解析》链接：   linux文件系统">
+<meta property="og:description" content="做项目不能太功利了，每次都是现学现卖，项目做完了落得两手空，还是要脚踏实地的学！做项目重在过程而不是结果啊！  参考书：《深入理解Linux内核》，《Linux内核源码剖析》，《Linux内核精解析》  linux虚拟文件系统（VitrulFileSystem）简介VFS只存在于内存中，它在系统启动时被创建，系统关闭时注销。VFS的作用就是屏蔽各类文件系统的差异，给用户、应用程序、甚至Linux其">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-13T01:38:13.000Z">
+<meta property="og:image" content="http://hengliy.github.io/images/vfs/vfs0.png">
+<meta property="og:image" content="http://hengliy.github.io/images/vfs/vfs1.png">
+<meta property="og:image" content="http://hengliy.github.io/images/vfs/vfs3.png">
+<meta property="og:image" content="http://hengliy.github.io/images/vfs/vfs2.png">
+<meta property="og:updated_time" content="2018-02-23T17:12:23.395Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux文件系统学习">
-<meta name="twitter:description" content="参考书：《深入理解Linux内核》，《Linux内核源码剖析》，《Linux内核精解析》链接：   linux文件系统">
+<meta name="twitter:description" content="做项目不能太功利了，每次都是现学现卖，项目做完了落得两手空，还是要脚踏实地的学！做项目重在过程而不是结果啊！  参考书：《深入理解Linux内核》，《Linux内核源码剖析》，《Linux内核精解析》  linux虚拟文件系统（VitrulFileSystem）简介VFS只存在于内存中，它在系统启动时被创建，系统关闭时注销。VFS的作用就是屏蔽各类文件系统的差异，给用户、应用程序、甚至Linux其">
+<meta name="twitter:image" content="http://hengliy.github.io/images/vfs/vfs0.png">
 
 
 
@@ -340,6 +346,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LINUX/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -367,10 +395,41 @@
       
 
       
-        <blockquote>
-<p>参考书：《深入理解Linux内核》，《Linux内核源码剖析》，《Linux内核精解析》<br>链接： </p>
+        <p>做项目不能太功利了，每次都是现学现卖，项目做完了落得两手空，还是要脚踏实地的学！做项目重在过程而不是结果啊！</p>
+<blockquote>
+<p>参考书：《深入理解Linux内核》，《Linux内核源码剖析》，《Linux内核精解析》</p>
 </blockquote>
-<h2 id="linux文件系统"><a href="#linux文件系统" class="headerlink" title="linux文件系统"></a>linux文件系统</h2>
+<h2 id="linux虚拟文件系统（VitrulFileSystem）简介"><a href="#linux虚拟文件系统（VitrulFileSystem）简介" class="headerlink" title="linux虚拟文件系统（VitrulFileSystem）简介"></a>linux虚拟文件系统（VitrulFileSystem）简介</h2><p>VFS只存在于内存中，它在系统启动时被创建，系统关闭时注销。<br>VFS的作用就是屏蔽各类文件系统的差异，给用户、应用程序、甚至Linux其他管理模块提供统一的接口集合。<br>管理VFS数据结构的组成部分主要包括超级块和inode。</p>
+<p>VFS是物理文件系统与服务之间的一个接口层，它对Linux的每个文件系统的所有细节进行抽象，使得不同的文件系统在Linux核心以及系统中运行的进程看来都是相同的。<br>严格的说，VFS并不是一种实际的文件系统。它只存在于内存中，不存在于任何外存空间。VFS在系统启动时建立，在系统关闭时消亡。</p>
+<p>VFS使Linux同时安装、支持许多不同类型的文件系统成为可能。VFS拥有关于各种特殊文件系统的公共界面，当某个进程发布了一个面向文件的系统调用时，内核将调用VFS中对应的函数，这个函数处理一些与物理结构无关的操作，并且把它重定向为真实文件系统中相应的函数调用，后者用来处理那些与物理结构相关的操作。</p>
+<p>下图就是逻辑上对VFS及其下层实际文件系统的组织图，可以看到用户层只能与VFS打交道，而不能直接访问实际的文件系统，比如EXT2、EXT3、PROC，换句话说，就是用户层不用也不能区别对待这些真正的文件系统，就是不能像打开大部分文件系统下的“文件”一样打开socket，它只能被创建，而且内核中对其有特殊性处理。</p>
+<p><img src="/images/vfs/vfs0.png" alt=""></p>
+<p>VFS主要要了解superblock，inode，dentry几个关键信息点</p>
+<h2 id="superblock（超级块对象）"><a href="#superblock（超级块对象）" class="headerlink" title="superblock（超级块对象）"></a>superblock（超级块对象）</h2><blockquote>
+<p>存放已安装文件系统的有关信息。也就是一个superblock对应一个文件系统，每个分区下可挂在多个文件系统，每个superblock中有自己独立的inode链表，所以每个superblock的inode编号是相同的。且superblock是inode编号为0的节点。</p>
+</blockquote>
+<h2 id="file（文件对象）"><a href="#file（文件对象）" class="headerlink" title="file（文件对象）"></a>file（文件对象）</h2><blockquote>
+<p>存放打开文件与进程之间进行交互的有关信息。</p>
+</blockquote>
+<h2 id="dentry（目录项对象）"><a href="#dentry（目录项对象）" class="headerlink" title="dentry（目录项对象）"></a>dentry（目录项对象）</h2><blockquote>
+<p>不是只对应目录文件，每个文件也对应一个目录项，存放目录项与对应文件进行链接的有关信息。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*内核版本---3.2.16*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dentry</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">inode</span> * <span class="title">d_inode</span>;</span> <span class="comment">//与文件名关联的索引节点</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">dentry</span> * <span class="title">d_parent</span>;</span> <span class="comment">//父目录的目录项对象</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">d_child</span>;</span> <span class="comment">//父目录中目录项对象的链表的指针</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">d_subdirs</span>;</span><span class="comment">//对目录而言，表示子目录目录项对象的链表</span></span><br><span class="line">	… …</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">qstr</span> <span class="title">d_name</span>;</span><span class="comment">//文件名</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">super_block</span> * <span class="title">d_sb</span>;</span><span class="comment">//文件的超级块对象</span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> d_iname [DNAME_INLINE_LEN];<span class="comment">//存放短文件名</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="inode（索引节点对象）"><a href="#inode（索引节点对象）" class="headerlink" title="inode（索引节点对象）"></a>inode（索引节点对象）</h2><blockquote>
+<p>inode是最小的文件单元，对文件的操作实际上是对inode的操作。文件储存在硬盘上，硬盘的最小存储单位叫做”扇区”（Sector）。每个扇区储存512字节（相当于0.5KB）。操作系统读取硬盘的时候，不会一个个扇区地读取，这样效率太低，而是一次性连续读取多个扇区，即一次性读取一个”块”（block）。这种由多个扇区组成的”块”，是文件存取的最小单位。”块”的大小，最常见的是4KB，即连续八个sector组成一个block。文件数据都储存在”块”中，那么很显然，我们还必须找到一个地方储存文件的元信息，比如文件的创建者、文件的创建日期、文件的大小等等。这种储存文件元信息的区域就叫做inode，VFS会专门在硬盘上开辟一个inode区，用来存储所有inode（所以每个分区的inode数是固定的，可以用“df -i”查看所有命令。）每一个文件都有对应的inode，里面包含了与该文件有关的一些信息。inode中包含了block块的头结点，可以找到所有数据区的block。</p>
+<p>sector-&gt;block-&gt;inode<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">inode</span>&#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> i_ino;         <span class="comment">//inode编号</span></span><br><span class="line">    <span class="keyword">umode_t</span> i_mode;           <span class="comment">//inode的权限</span></span><br><span class="line">    <span class="keyword">uid_t</span> i_uid;                <span class="comment">//inode拥有者的id</span></span><br><span class="line">    <span class="keyword">gid_t</span> i_gid;                <span class="comment">//inode所属的群组id</span></span><br><span class="line">    <span class="keyword">off_t</span> i_size;                <span class="comment">//inode所代表的档案大小</span></span><br><span class="line">	… …</span><br><span class="line">    <span class="keyword">time_t</span> i_atime;             <span class="comment">//最近一次存取时间</span></span><br><span class="line">    <span class="keyword">time_t</span> i_mtime;            <span class="comment">//最近一次修改时间</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> i_bytes;      <span class="comment">//inode节点的大小</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">super_block</span> * <span class="title">s_type</span>;</span>  <span class="comment">//所属文件系统</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><strong>superblock的链接方式:</strong><br><img src="/images/vfs/vfs1.png" alt=""></p>
+<p><strong>vfs对象链接图：</strong><br><img src="/images/vfs/vfs3.png" alt=""></p>
+<p><strong>文件读取过程</strong><br>从用户的观点来看，文件被组织在一个树结构的命名空间中，在Linux中，每个目录被看作一个文件，可以包含若干文件和其他的子目录．一旦目录项被读入内存，虚拟文件系统就把它转换成基于dentry结构体的一个目录项对象，dentry数据结构点定义在内核文include\linux\dcache.h中,不同的内核版本在结构上面略有不同！每个虚拟且存在的dentry对象都对应一个inode节点来存储文件数据的更多信息，inode结构的在include\linux\fs.h定义</p>
+<p>在读取一个文件时，是没有dentry结构的，（VFS也是存储在内存中的，在系统启动时创建，只有inode是存储在磁盘上的）所以访问的时候是边访问边创建dentry。读取文件总是从根目录开始读取，每一个目录或者文件，在VFS中，都是一个文件对象，每一个文件对象都有唯一的一个inode与之对应。根目录的inode号为0，在superblock里，可以很快根据inode号索引到具体的inode，因此读取到的第一个inode就是根目录的。读取到了该目录后，内核对象会为该文件对象建立一个dentry，并将其缓存起来，方便下一次读取时直接从内存中取。而目录本身也是一个文件，目录文件的内容即是该目录下的文件的名字与inode号，目录文件的内容就像一张表，记录的文件名与其inode no.之间的映射关系。根据路径即可找到当前需要读取的下一级文件的名字和inode，同时继续为该文件建立dentry，dentry结构是一种含有指向父节点和子节点指针的双向结构，多个这样的双向结构构成一个内存里面的树状结构，也就是文件系统的目录结构在内存中的缓存了。有了这个缓存，我们在访问文件系统时，通常都非常快捷。</p>
+<p><strong>Linux目录树对应的数据结构示意图</strong><br>链接方式比较独特请注意：父目录通过d_subdirs指向子目录链表，然后子目录通过d_child连接起来．子目录通过d_parent指针指向其父目录:<br><img src="/images/vfs/vfs2.png" alt=""></p>
+<h2 id="软硬链接"><a href="#软硬链接" class="headerlink" title="软硬链接"></a>软硬链接</h2><p>其实我们在操作系统用户层面操作的就是硬链接，在用户界面删除一个文件实际上是删除一个硬链接，当一个inode的硬链接技术为0时，系统就会回收这个inode号码，这个inode的block就可以被新文件覆盖。所以我们创建一个硬链接不会占用磁盘容量。创建硬链接就是创建一个dentry。<br>软连接就可以理解为windows下的快捷方式（直接ln -s创建的软连接是相对路径，移动后就不能用了，要移动的话必须要使用绝对路径来生成）</p>
+<h2 id="linux的树结构与链表"><a href="#linux的树结构与链表" class="headerlink" title="linux的树结构与链表"></a>linux的树结构与链表</h2><blockquote>
+<p>linux 内核链表为双向循环链表，且每个节点对象的成员有一个list_head变量即有前后两个指针，指向前后节点对象的list_head变量的指针，参照上图）<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">next</span>, *<span class="title">prev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="dentry打印目录下所有文件"><a href="#dentry打印目录下所有文件" class="headerlink" title="dentry打印目录下所有文件"></a>dentry打印目录下所有文件</h2><p>根据当前目录（current变量）一直向上找找到根目录，再向下找，找到目标目录，并遍历。这里就比较坑了，同一层目录链表的尾指针并没有指向第一个文件，而是指向了上一级目录，而上一级目录指向了本级目录的第一个节点，打印了一下午没有打印出来，网上还没有资料，关键时刻还是要看源码啊！从mkdir()函数一路找下去，找到dentry的连接函数，观察链接过程，如下所示第46行：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct dentry *<span class="title">d_alloc</span><span class="params">(struct dentry * parent, <span class="keyword">const</span> struct qstr *name)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dentry</span> *<span class="title">dentry</span>;</span>  </span><br><span class="line">    <span class="keyword">char</span> *dname;  </span><br><span class="line">  </span><br><span class="line">    dentry = kmem_cache_alloc(dentry_cache, GFP_KERNEL);  </span><br><span class="line">    <span class="keyword">if</span> (!dentry)  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> (name-&gt;len &gt; DNAME_INLINE_LEN<span class="number">-1</span>) &#123;  </span><br><span class="line">        dname = kmalloc(name-&gt;len + <span class="number">1</span>, GFP_KERNEL);  </span><br><span class="line">        <span class="keyword">if</span> (!dname) &#123;  </span><br><span class="line">            kmem_cache_free(dentry_cache, dentry);   </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">NULL</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125; <span class="keyword">else</span>  &#123;  </span><br><span class="line">        dname = dentry-&gt;d_iname;  </span><br><span class="line">    &#125;     </span><br><span class="line">    dentry-&gt;d_name.name = dname;  </span><br><span class="line">  </span><br><span class="line">    dentry-&gt;d_name.len = name-&gt;len;  </span><br><span class="line">    dentry-&gt;d_name.hash = name-&gt;hash;  </span><br><span class="line">    <span class="built_in">memcpy</span>(dname, name-&gt;name, name-&gt;len);  </span><br><span class="line">    dname[name-&gt;len] = <span class="number">0</span>;  </span><br><span class="line">  </span><br><span class="line">    atomic_set(&amp;dentry-&gt;d_count, <span class="number">1</span>);  </span><br><span class="line">    dentry-&gt;d_flags = DCACHE_UNHASHED;  </span><br><span class="line">    spin_lock_init(&amp;dentry-&gt;d_lock);  </span><br><span class="line">    dentry-&gt;d_inode = <span class="literal">NULL</span>;  </span><br><span class="line">    dentry-&gt;d_parent = <span class="literal">NULL</span>;  </span><br><span class="line">    dentry-&gt;d_sb = <span class="literal">NULL</span>;  </span><br><span class="line">    dentry-&gt;d_op = <span class="literal">NULL</span>;  </span><br><span class="line">    dentry-&gt;d_fsdata = <span class="literal">NULL</span>;  </span><br><span class="line">    dentry-&gt;d_mounted = <span class="number">0</span>;  </span><br><span class="line">    INIT_HLIST_NODE(&amp;dentry-&gt;d_hash);  </span><br><span class="line">    INIT_LIST_HEAD(&amp;dentry-&gt;d_lru);  </span><br><span class="line">    INIT_LIST_HEAD(&amp;dentry-&gt;d_subdirs);  </span><br><span class="line">    INIT_LIST_HEAD(&amp;dentry-&gt;d_alias);  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> (parent) &#123;  </span><br><span class="line">        dentry-&gt;d_parent = dget(parent);  </span><br><span class="line">        dentry-&gt;d_sb = parent-&gt;d_sb;  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        INIT_LIST_HEAD(&amp;dentry-&gt;d_u.d_child);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    spin_lock(&amp;dcache_lock);  </span><br><span class="line">    <span class="keyword">if</span> (parent)     </span><br><span class="line">    	<span class="comment">/*就是这个地方，看指向的位置，指向的不是下一个节点，而是父节点啊！*/</span></span><br><span class="line">        list_add(&amp;dentry-&gt;d_u.d_child, &amp;parent-&gt;d_subdirs); </span><br><span class="line">        <span class="comment">/*******************************************************/</span></span><br><span class="line">    dentry_stat.nr_dentry++;  </span><br><span class="line">    spin_unlock(&amp;dcache_lock);  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> dentry;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>由此可写出打印指定目录下所有文件代码片</strong><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">printk(<span class="string">"a dentry name : %s\n"</span>,a_dentry-&gt;d_name.name);  </span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">dentry</span> *<span class="title">a_parent_dentry</span> = <span class="title">a_dentry</span>-&gt;<span class="title">d_parent</span>;</span>  </span><br><span class="line">   printk(KERN_EMERG<span class="string">"根目录名称: %s\n"</span>,a_parent_dentry-&gt;d_name.name);  </span><br><span class="line"> </span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> *<span class="title">plist</span>;</span>  </span><br><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">dentry</span> *<span class="title">sub_dentry</span>;</span>  </span><br><span class="line"> </span><br><span class="line">   list_for_each(plist, &amp;(a_parent_dentry-&gt;d_subdirs))  </span><br><span class="line">   &#123;  </span><br><span class="line">       sub_dentry = list_entry(plist, struct dentry, d_u.d_child);  </span><br><span class="line">       <span class="keyword">if</span>(sub_dentry)  </span><br><span class="line">       &#123;  </span><br><span class="line">           printk(KERN_EMERG<span class="string">"subdirs_dentry %s\n"</span>,sub_dentry-&gt;d_name.name);  </span><br><span class="line">           printk(KERN_EMERG<span class="string">"sub_dentry %ld\n"</span>,sub_dentry);  </span><br><span class="line">       &#125;  </span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
     
@@ -389,7 +448,7 @@
   <p><span>本文标题:</span><a href="/2017/09/21/LINUX文件系统学习/">Linux文件系统学习</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2017年09月21日 - 19:09</p>
-  <p><span>最后更新:</span>2018年02月13日 - 09:02</p>
+  <p><span>最后更新:</span>2018年02月24日 - 01:02</p>
   <p><span>原始链接:</span><a href="/2017/09/21/LINUX文件系统学习/" title="Linux文件系统学习">http://hengliy.github.io/2017/09/21/LINUX文件系统学习/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2017/09/21/LINUX文件系统学习/"  aria-label="复制成功！"></i></span>
   </p>
@@ -420,6 +479,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LINUX/" rel="tag"># linux</a>
+          
+            <a href="/tags/文件系统/" rel="tag"># 文件系统</a>
+          
+        </div>
+      
 
       
       
@@ -429,8 +496,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/15/虚拟机自省与LIBVMI库学习/" rel="next" title="虚拟机自省与libvmi库学习">
-                <i class="fa fa-chevron-left"></i> 虚拟机自省与libvmi库学习
+              <a href="/2017/09/12/XEN-KVM虚拟机原理学习/" rel="next" title="xen&kvm虚拟化原理学习">
+                <i class="fa fa-chevron-left"></i> xen&kvm虚拟化原理学习
               </a>
             
           </div>
@@ -522,7 +589,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -533,7 +600,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -544,7 +611,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -593,7 +660,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux文件系统"><span class="nav-number">1.</span> <span class="nav-text">linux文件系统</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux虚拟文件系统（VitrulFileSystem）简介"><span class="nav-number">1.</span> <span class="nav-text">linux虚拟文件系统（VitrulFileSystem）简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#superblock（超级块对象）"><span class="nav-number">2.</span> <span class="nav-text">superblock（超级块对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#file（文件对象）"><span class="nav-number">3.</span> <span class="nav-text">file（文件对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dentry（目录项对象）"><span class="nav-number">4.</span> <span class="nav-text">dentry（目录项对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#inode（索引节点对象）"><span class="nav-number">5.</span> <span class="nav-text">inode（索引节点对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软硬链接"><span class="nav-number">6.</span> <span class="nav-text">软硬链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux的树结构与链表"><span class="nav-number">7.</span> <span class="nav-text">linux的树结构与链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dentry打印目录下所有文件"><span class="nav-number">8.</span> <span class="nav-text">dentry打印目录下所有文件</span></a></li></ol></div>
             
 
           </div>

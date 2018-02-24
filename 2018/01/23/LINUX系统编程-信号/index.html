@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/ >
+<script>
+    (function(){
+        if(''){
+            if (prompt('please entry article password') !== ''){
+                alert('password wrong!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="linux,信号," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="信号（软中断）常见信号的产生：1.ctrl+c SIGINT（终止/中断）2.系统调用kill3.定时器alarm4.硬件异常5.命令产生kill 阻塞态：阻塞信号集（信号屏蔽字）       未决信号集 信号的处理方式：1.执行默认动作2.忽略（丢弃）3.捕捉（调用用户处理函数） 信号的4要素1、编号2、名称3、事件">
+<meta name="keywords" content="linux,信号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux系统编程-信号">
+<meta property="og:url" content="http://hengliy.github.io/2018/01/23/LINUX系统编程-信号/index.html">
+<meta property="og:site_name" content="Hengliy_Space">
+<meta property="og:description" content="信号（软中断）常见信号的产生：1.ctrl+c SIGINT（终止/中断）2.系统调用kill3.定时器alarm4.硬件异常5.命令产生kill 阻塞态：阻塞信号集（信号屏蔽字）       未决信号集 信号的处理方式：1.执行默认动作2.忽略（丢弃）3.捕捉（调用用户处理函数） 信号的4要素1、编号2、名称3、事件4、默认处理动作 常用信号kill -l1-31号为应用层常规信号man命令 m">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://hengliy.github.io/images/Screenshot%20from%202018-02-23%2022-33-18.png">
+<meta property="og:updated_time" content="2018-02-24T09:13:30.869Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux系统编程-信号">
+<meta name="twitter:description" content="信号（软中断）常见信号的产生：1.ctrl+c SIGINT（终止/中断）2.系统调用kill3.定时器alarm4.硬件异常5.命令产生kill 阻塞态：阻塞信号集（信号屏蔽字）       未决信号集 信号的处理方式：1.执行默认动作2.忽略（丢弃）3.捕捉（调用用户处理函数） 信号的4要素1、编号2、名称3、事件4、默认处理动作 常用信号kill -l1-31号为应用层常规信号man命令 m">
+<meta name="twitter:image" content="http://hengliy.github.io/images/Screenshot%20from%202018-02-23%2022-33-18.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hengliy.github.io/2018/01/23/LINUX系统编程-信号/"/>
+
+
+
+
+
+  <title>linux系统编程-信号 | Hengliy_Space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hengliy_Space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">扎实的基础是最牛X的技术！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hengliy.github.io/2018/01/23/LINUX系统编程-信号/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hengliy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengliy_Space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux系统编程-信号</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T12:34:14+08:00">
+                2018-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LINUX系统编程/" itemprop="url" rel="index">
+                    <span itemprop="name">linux系统编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="信号（软中断）"><a href="#信号（软中断）" class="headerlink" title="信号（软中断）"></a>信号（软中断）</h1><h2 id="常见信号的产生："><a href="#常见信号的产生：" class="headerlink" title="常见信号的产生："></a>常见信号的产生：</h2><p>1.ctrl+c SIGINT（终止/中断）<br>2.系统调用kill<br>3.定时器alarm<br>4.硬件异常<br>5.命令产生kill</p>
+<p>阻塞态：阻塞信号集（信号屏蔽字）<br>       未决信号集<br><img src="/images/Screenshot from 2018-02-23 22-33-18.png" alt=""></p>
+<h2 id="信号的处理方式："><a href="#信号的处理方式：" class="headerlink" title="信号的处理方式："></a>信号的处理方式：</h2><p>1.执行默认动作<br>2.忽略（丢弃）<br>3.捕捉（调用用户处理函数）</p>
+<h2 id="信号的4要素"><a href="#信号的4要素" class="headerlink" title="信号的4要素"></a>信号的4要素</h2><p>1、编号<br>2、名称<br>3、事件<br>4、默认处理动作</p>
+<h2 id="常用信号"><a href="#常用信号" class="headerlink" title="常用信号"></a>常用信号</h2><p>kill -l<br>1-31号为应用层常规信号<br><strong>man命令</strong> man 7 signal<br>1) SIGHUP<br>本信号在用户终端连接(正常或非正常)结束时发出, 通常是在终端的控制进程结束时, 通知同一session内的各个作业, 这时它们与控制终端不再关联。<br>登录Linux时，系统会分配给登录用户一个终端(Session)。在这个终端运行的所有程序，包括前台进程组和后台进程组，一般都属于这个Session。当用户退出Linux登录时，前台进程组和后台有对终端输出的进程将会收到SIGHUP信号。这个信号的默认操作为终止进程，因此前台进程组和后台有终端输出的进程就会中止。不过可以捕获这个信号，比如wget能捕获SIGHUP信号，并忽略它，这样就算退出了Linux登录，wget也能继续下载。</p>
+<p>此外，对于与终端脱离关系的守护进程，这个信号用于通知它重新读取配置文件。</p>
+<p>2) SIGINT<br>程序终止(interrupt)信号, 在用户键入INTR字符(通常是Ctrl-C)时发出，用于通知前台进程组终止进程。</p>
+<p>3) SIGQUIT<br>和SIGINT类似, 但由QUIT字符(通常是Ctrl-)来控制. 进程在因收到SIGQUIT退出时会产生core文件, 在这个意义上类似于一个程序错误信号。</p>
+<p>4) SIGILL<br>执行了非法指令. 通常是因为可执行文件本身出现错误, 或者试图执行数据段. 堆栈溢出时也有可能产生这个信号。</p>
+<p>5) SIGTRAP<br>由断点指令或其它trap指令产生. 由debugger使用。</p>
+<p>6) SIGABRT<br>调用abort函数生成的信号。</p>
+<p>7) SIGBUS<br>非法地址, 包括内存地址对齐(alignment)出错。比如访问一个四个字长的整数, 但其地址不是4的倍数。它与SIGSEGV的区别在于后者是由于对合法存储地址的非法访问触发的(如访问不属于自己存储空间或只读存储空间)。</p>
+<p>8) SIGFPE<br>在发生致命的算术运算错误时发出. 不仅包括浮点运算错误, 还包括溢出及除数为0等其它所有的算术的错误。</p>
+<p>9) SIGKILL<br>用来立即结束程序的运行. 本信号不能被阻塞、处理和忽略。如果管理员发现某个进程终止不了，可尝试发送这个信号。</p>
+<p>10) SIGUSR1<br>留给用户使用</p>
+<p>11) SIGSEGV<br>试图访问未分配给自己的内存, 或试图往没有写权限的内存地址写数据.</p>
+<p>12) SIGUSR2</p>
+<p>留给用户使用</p>
+<p>13) SIGPIPE<br>管道破裂。这个信号通常在进程间通信产生，比如采用FIFO(管道)通信的两个进程，读管道没打开或者意外终止就往管道写，写进程会收到SIGPIPE信号。此外用Socket通信的两个进程，写进程在写Socket的时候，读进程已经终止。</p>
+<p>14) SIGALRM<br>时钟定时信号, 计算的是实际的时间或时钟时间. alarm函数使用该信号.</p>
+<p>15) SIGTERM<br>程序结束(terminate)信号, 与SIGKILL不同的是该信号可以被阻塞和处理。通常用来要求程序自己正常退出，shell命令kill缺省产生这个信号。如果进程终止不了，我们才会尝试SIGKILL。</p>
+<p>17) SIGCHLD<br>子进程结束时, 父进程会收到这个信号。</p>
+<p>如果父进程没有处理这个信号，也没有等待(wait)子进程，子进程虽然终止，但是还会在内核进程表中占有表项，这时的子进程称为僵尸进程。这种情况我们应该避免(父进程或者忽略SIGCHILD信号，或者捕捉它，或者wait它派生的子进程，或者父进程先终止，这时子进程的终止自动由init进程来接管)。</p>
+<p>18) SIGCONT<br>让一个停止(stopped)的进程继续执行. 本信号不能被阻塞. 可以用一个handler来让程序在由stopped状态变为继续执行时完成特定的工作. 例如, 重新显示提示符</p>
+<p>19) SIGSTOP<br>停止(stopped)进程的执行. 注意它和terminate以及interrupt的区别:该进程还未结束, 只是暂停执行. 本信号不能被阻塞, 处理或忽略.</p>
+<p>20) SIGTSTP<br>停止进程的运行, 但该信号可以被处理和忽略. 用户键入SUSP字符时(通常是Ctrl-Z)发出这个信号</p>
+<p>21) SIGTTIN<br>当后台作业要从用户终端读数据时, 该作业中的所有进程会收到SIGTTIN信号. 缺省时这些进程会停止执行.</p>
+<p>22) SIGTTOU<br>类似于SIGTTIN, 但在写终端(或修改终端模式)时收到.</p>
+<p>23) SIGURG<br>有”紧急”数据或out-of-band数据到达socket时产生.</p>
+<p>24) SIGXCPU<br>超过CPU时间资源限制. 这个限制可以由getrlimit/setrlimit来读取/改变。</p>
+<p>25) SIGXFSZ<br>当进程企图扩大文件以至于超过文件大小资源限制。</p>
+<p>26) SIGVTALRM<br>虚拟时钟信号. 类似于SIGALRM, 但是计算的是该进程占用的CPU时间.</p>
+<p>27) SIGPROF<br>类似于SIGALRM/SIGVTALRM, 但包括该进程用的CPU时间以及系统调用的时间.</p>
+<p>28) SIGWINCH<br>窗口大小改变时发出.</p>
+<p>29) SIGIO<br>文件描述符准备就绪, 可以开始进行输入/输出操作.</p>
+<p>30) SIGPWR<br>Power failure</p>
+<p>31) SIGSYS<br>非法的系统调用。</p>
+<p>在以上列出的信号中，程序不可捕获、阻塞或忽略的信号有：SIGKILL,SIGSTOP</p>
+<p>不能恢复至默认动作的信号有：SIGILL,SIGTRAP</p>
+<p>默认会导致进程流产的信号有：SIGABRT,SIGBUS,SIGFPE,SIGILL,SIGIOT,SIGQUIT,SIGSEGV,SIGTRAP,SIGXCPU,SIGXFSZ</p>
+<p>默认会导致进程退出的信号有：SIGALRM,SIGHUP,SIGINT,SIGKILL,SIGPIPE,SIGPOLL,SIGPROF,SIGSYS,SIGTERM,SIGUSR1,SIGUSR2,SIGVTALRM</p>
+<p>默认会导致进程停止的信号有：SIGSTOP,SIGTSTP,SIGTTIN,SIGTTOU</p>
+<p>默认进程忽略的信号有：SIGCHLD,SIGPWR,SIGURG,SIGWINCH</p>
+<p>linux系统保留了 SIGKILL和SIGSYOP信号，不予怒徐忽略和捕捉，只能执行默认动作，甚至不能将其设置为阻塞。</p>
+<h2 id="信号操作"><a href="#信号操作" class="headerlink" title="信号操作"></a>信号操作</h2><p>信号操作最常用的方法是信号的屏蔽，信号屏蔽主要用到以下几个函数:</p>
+<pre><code>int sigemptyset(sigset_t *set);
+</code></pre><p>sigemptyset()函数初始化信号集set并将set设置为空。</p>
+<pre><code>int sigfillset(sigset_t *set);
+</code></pre><p>sigfillset()函数初始化信号集，但将信号集set设置为所有信号的集合。</p>
+<pre><code>int sigaddset(sigset_t *set,int signo);
+</code></pre><p>sigaddset()将信号signo加入到信号集中去。</p>
+<pre><code>int sigdelset(sigset_t *set,int signo);
+</code></pre><p>sigdelset()从信号集中删除signo信号。</p>
+<h2 id="信号集的初始化"><a href="#信号集的初始化" class="headerlink" title="信号集的初始化"></a>信号集的初始化</h2><p>有两种方法: 一种是用sigemptyset使信号集中不包含任何信号，然后用sigaddset把信号加入到信号集中去。<br>另一种是用sigfillset让信号集中包含所有信号，然后用sigdelset删除信号来初始化。<br>sigprocmask()将指定的信号集合加入到进程的信号阻塞集合中去。如果提供了oset,那么当前的信号阻塞集合将会保存到oset集全中去。</p>
+<p>SIG_BLOCK 增加一个信号集合到当前进程的阻塞集合中去</p>
+<p>SIG_UNBLOCK 从当前的阻塞集合中删除一个信号集合</p>
+<p>SIG_SETMASK 将当前的信号集合设置为信号阻塞集合</p>
+<h2 id="默认动作"><a href="#默认动作" class="headerlink" title="默认动作"></a>默认动作</h2><p>Term：终止进程<br>lgn：忽略进程<br>Core：终止进程<br>Stop：停止进程<br>Cont：继续运行进程</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/23/LINUX系统编程-信号/">linux系统编程-信号</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
+  <p><span>发布时间:</span>2018年01月23日 - 12:01</p>
+  <p><span>最后更新:</span>2018年02月24日 - 17:02</p>
+  <p><span>原始链接:</span><a href="/2018/01/23/LINUX系统编程-信号/" title="linux系统编程-信号">http://hengliy.github.io/2018/01/23/LINUX系统编程-信号/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/01/23/LINUX系统编程-信号/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LINUX/" rel="tag"># linux</a>
+          
+            <a href="/tags/信号/" rel="tag"># 信号</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/16/LINUX系统编程-进程间通信练手/" rel="next" title="linux系统编程-进程间通信练手">
+                <i class="fa fa-chevron-left"></i> linux系统编程-进程间通信练手
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/23/新系统配置/" rel="prev" title="新系统配置">
+                新系统配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/favicon.jpg"
+                alt="Hengliy" />
+            
+              <p class="site-author-name" itemprop="name">Hengliy</p>
+              <p class="site-description motion-element" itemprop="description">hold my heart</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Hengliy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hengliy_li@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#信号（软中断）"><span class="nav-number">1.</span> <span class="nav-text">信号（软中断）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见信号的产生："><span class="nav-number">1.1.</span> <span class="nav-text">常见信号的产生：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号的处理方式："><span class="nav-number">1.2.</span> <span class="nav-text">信号的处理方式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号的4要素"><span class="nav-number">1.3.</span> <span class="nav-text">信号的4要素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用信号"><span class="nav-number">1.4.</span> <span class="nav-text">常用信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号操作"><span class="nav-number">1.5.</span> <span class="nav-text">信号操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号集的初始化"><span class="nav-number">1.6.</span> <span class="nav-text">信号集的初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认动作"><span class="nav-number">1.7.</span> <span class="nav-text">默认动作</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hengliy</span>
+
+  
+</div>
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+</html>

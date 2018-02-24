@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/ >
+<script>
+    (function(){
+        if(''){
+            if (prompt('please entry article password') !== ''){
+                alert('password wrong!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="linux,进程," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="进程控制task_struct结构体1234567891011121314struct task_struct&amp;#123;	volatile long state;      //进程状态	void * stack;	       //指向thread_info结构体的指针	… …	struct list_he">
+<meta name="keywords" content="linux,进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统编程-进程控制">
+<meta property="og:url" content="http://hengliy.github.io/2018/01/15/LINUX系统编程-进程控制/index.html">
+<meta property="og:site_name" content="Hengliy_Space">
+<meta property="og:description" content="进程控制task_struct结构体1234567891011121314struct task_struct&amp;#123;	volatile long state;      //进程状态	void * stack;	       //指向thread_info结构体的指针	… …	struct list_head  tasks;  //任务队列	struct mm_struct  *mm; //">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-24T02:32:47.685Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux系统编程-进程控制">
+<meta name="twitter:description" content="进程控制task_struct结构体1234567891011121314struct task_struct&amp;#123;	volatile long state;      //进程状态	void * stack;	       //指向thread_info结构体的指针	… …	struct list_head  tasks;  //任务队列	struct mm_struct  *mm; //">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hengliy.github.io/2018/01/15/LINUX系统编程-进程控制/"/>
+
+
+
+
+
+  <title>Linux系统编程-进程控制 | Hengliy_Space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hengliy_Space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">扎实的基础是最牛X的技术！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hengliy.github.io/2018/01/15/LINUX系统编程-进程控制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hengliy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengliy_Space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux系统编程-进程控制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-15T10:06:18+08:00">
+                2018-01-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LINUX系统编程/" itemprop="url" rel="index">
+                    <span itemprop="name">linux系统编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h1><h2 id="task-struct结构体"><a href="#task-struct结构体" class="headerlink" title="task_struct结构体"></a>task_struct结构体</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">volatile</span> <span class="keyword">long</span> state;      <span class="comment">//进程状态</span></span><br><span class="line">	<span class="keyword">void</span> * <span class="built_in">stack</span>;	       <span class="comment">//指向thread_info结构体的指针</span></span><br><span class="line">	… …</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>  <span class="title">tasks</span>;</span>  <span class="comment">//任务队列</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">mm_struct</span>  *<span class="title">mm</span>;</span> <span class="comment">//内存管理结构体指针</span></span><br><span class="line">	pid  _tpid;            <span class="comment">//进程ID</span></span><br><span class="line">	pid  _ttgid;           <span class="comment">//线程组ID</span></span><br><span class="line">	… …</span><br><span class="line">	<span class="keyword">char</span>  comm [TASK__COMM__LEN]；<span class="comment">//进程名</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">thead__struct</span>  <span class="title">thread</span>;</span>      <span class="comment">//CPU状态</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">file_struct</span>  *<span class="title">files</span>;</span>          <span class="comment">//进程打开的文件信息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="fork"><a href="#fork" class="headerlink" title="fork()"></a>fork()</h2><blockquote>
+<p>创建一个子进程</p>
+</blockquote>
+<pre><code>pid_t fork(void);
+</code></pre><p>返回值：1.父进程的fork返回值为子进程的id<br>      2.子进程的fork返回值为0（进程创建成功） </p>
+<p><strong>创建5个进程</strong><br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注意，第二个子进程还可以创建4个子进程</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">pid_t</span> pid;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		pid=fork();</span><br><span class="line">		<span class="keyword">if</span>(pid==<span class="number">-1</span>)&#123;</span><br><span class="line">			perror(<span class="string">"fork error:"</span>);</span><br><span class="line">			<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(pid==<span class="number">0</span>)&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"child %d =%u,parent id=%u\n"</span>,i,getpid(),getppid());</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"parent process=%u\n"</span>,getpid());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="进程共享"><a href="#进程共享" class="headerlink" title="进程共享"></a>进程共享</h2><h3 id="父子进程共享"><a href="#父子进程共享" class="headerlink" title="父子进程共享"></a>父子进程共享</h3><p>父子进程之间遵循读时共享写时复制的原则，这样设计，无论子进程执行父进程的逻辑还是执行自己的逻辑都能节省内存开销。<br>共享：1、文件描述符。2、mmap建立的映射区（进程间通信）<br>测试：父子进程是否共享全局变量<br>调试gdb：指明gdb调试器跟踪哪个进程：<br>    set follow-fork-mode child<br>    set follow-fork-mode parent</p>
+<h2 id="孤儿进程-amp-僵尸进程"><a href="#孤儿进程-amp-僵尸进程" class="headerlink" title="孤儿进程&amp;僵尸进程"></a>孤儿进程&amp;僵尸进程</h2><blockquote>
+<p>孤儿进程：父进程先于子进程结束，则子进程成为孤儿进程，子进程的父进程转为init进程，称为init进程领养的孤儿进程。</p>
+<p>僵尸进程：进程终止，父进程尚未回收，子进程残留资源（PCB）存放在内核中，变成僵尸进程。回收子进程wait()与waitpid()<br>ps aux</p>
+</blockquote>
+<h2 id="wait"><a href="#wait" class="headerlink" title="wait()"></a>wait()</h2><blockquote>
+<p>父进程调用wait函数可以回收子进程，该函数有三个功能：1、阻塞等待进程退出。2、回收子进程残留资源。3、获取子进程结束原因，借助宏函数来 进一步判断进程终止的具体原因。</p>
+</blockquote>
+<pre><code>pid_t wait(int* status);
+</code></pre><p>返回子进程id，或者-1（未成功）</p>
+<h2 id="waitpid"><a href="#waitpid" class="headerlink" title="waitpid()"></a>waitpid()</h2><blockquote>
+<p>作用同wait()函数，但是可以指定pid进程进行回收。</p>
+</blockquote>
+<pre><code>pid_t waitpid(pid_t pid,int* status,int options)
+</code></pre><hr>
+<h1 id="exec函数族"><a href="#exec函数族" class="headerlink" title="exec函数族"></a>exec函数族</h1><blockquote>
+<p>调用exec不会创建新的进程，一般fork一个子进程调用一个exec函数执行另外一个程序，子进程的数据区等会被另外一个程序完全替换。exec函数一旦调用成功即执行新的程序，不返回，只有失败才返回，错误值-1，所以通常我们直接在exec函数调用后直接调用perror()和exit()，无需if判断。<br>只有exevce是系统调用，其他几个函数最终都是调用的exevce()，所以execve在man手册第2节，其他函数在man手册第3节。</p>
+</blockquote>
+<h2 id="exevce-系统调用"><a href="#exevce-系统调用" class="headerlink" title="exevce()系统调用"></a>exevce()系统调用</h2><pre><code>int execve(const char *filename, char *const argv[], char *const envp[]); 
+</code></pre><p>execve()执行程序由 filename决定。<br>filename必须是一个二进制的可执行文件，或者是一个脚本以#！格式开头的解释器参数参数。如果是后者，这个解释器必须是一个可执行的有效的路径名，但是不是脚本本身，它将调用解释器作为文件名。</p>
+<h2 id="execlp"><a href="#execlp" class="headerlink" title="execlp()"></a>execlp()</h2><blockquote>
+<p>加载一个进程，借助path环境变量。“ls”</p>
+</blockquote>
+<pre><code>int execlp(const char *file, const char *arg, ... (char  *) NULL );
+</code></pre><h2 id="execl"><a href="#execl" class="headerlink" title="execl()"></a>execl()</h2><blockquote>
+<p>通过路径名来加载一个进程“/bin/ls”<br>     int execl(const char <em>path, const char </em>arg, …(char  *) NULL );</p>
+</blockquote>
+<h2 id="execvp"><a href="#execvp" class="headerlink" title="execvp()"></a>execvp()</h2><blockquote>
+<p>　加载一个进程，使用自定义环境变量env</p>
+<pre><code>int execvp(const char *file, char *const argv[]);
+</code></pre><hr>
+<h1 id="进程间通信（Inter-Process-Communication）"><a href="#进程间通信（Inter-Process-Communication）" class="headerlink" title="进程间通信（Inter-Process Communication）"></a>进程间通信（Inter-Process Communication）</h1><h2 id="管道（pipe）"><a href="#管道（pipe）" class="headerlink" title="管道（pipe）"></a>管道（pipe）</h2><p>管道是一种最基本的ipc机制，作用于有血缘关系 的进程之间，完成数据的传递，调用pipe系统函数即可创建一个管道，有如下特质：<br>1、一个管道是一个伪文件（实为内核缓冲区？）<br>2、由两个文件描述符引用，一个表示读端，一个表示写端。<br>3、规定数据从管道的写端流入管道，从读端流出。<br>4、使用简单。<br><strong>管道的原理：</strong>管道实际上是内核使用环形队列机制，借助<strong>内核缓冲区（4K）</strong>[ulimit -a]实现。<br><strong>管道的局限：</strong><br>1、数据自己读不能自己写。<br>2、数据一旦被读走，便不在管道中存在，不可反复读取<br>3、由于管道采用双向半双工（单向）通信方式，因此数据只能在一个方向上流动<br>4、只能在有公共祖先的进程间使用管道</p>
+<h3 id="pipe"><a href="#pipe" class="headerlink" title="pipe()"></a>pipe()</h3><pre><code>int pipe(int pipefd[2]); 
+</code></pre><p>pipefd会被赋两个文件描述符，无需open，但需要调用close(int fd)，关闭一端，规定fd[0]-&gt;r,fd[1]-&gt;w,就像0对应标准输入，1对应标准输出一样，向管道文件读写数据其实就是在读写内核缓冲区，进程做一次fork，子进程和父进程各关闭一个读写端并各使用一个读写端进行通信。</p>
+</blockquote>
+<h2 id="FIFO（有名管道）"><a href="#FIFO（有名管道）" class="headerlink" title="FIFO（有名管道）"></a>FIFO（有名管道）</h2><blockquote>
+<p>用于非血缘关系进程间通信,FIFO往往都是多个写进程，一个读进程。（服务器）<br><strong>命令</strong>：mkfifo<br><strong>函数</strong>：mkfifo()</p>
+</blockquote>
+<pre><code>int mkfifo(const char* pathname,mode_t mode);
+</code></pre><p><strong>参数</strong>:pathname是将要在文件系统中创建的一个专用文件。mode:用来规定FIFO的读写权限。Mkfifo函数如果调用成功的话，返回值为0；如果调用失败返回值为-1。<br>fifo打开后可以直接利用典型的输入输出函数从pathname文件中进行读写。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*举例*/</span></span><br><span class="line">    <span class="keyword">int</span> ret;</span><br><span class="line">    ...</span><br><span class="line">    ret = mkfifo( <span class="string">"/tmp/cmd_pipe"</span>, <span class="number">0666</span> );</span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">0</span>) ...&#123;</span><br><span class="line">      <span class="comment">// 成功建立命名管道</span></span><br><span class="line">    &#125; <span class="keyword">else</span> ...&#123;</span><br><span class="line">      <span class="comment">// 创建命名管道失败</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*读取数据*/</span></span><br><span class="line">    ...</span><br><span class="line">    pfp = fopen( <span class="string">"/tmp/cmd_pipe"</span>, <span class="string">"r"</span> );</span><br><span class="line">    ...</span><br><span class="line">	ret = fgets( buffer, MAX_LINE, pfp );</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>非阻塞标志(O_NONBLOCK)</strong>：<br>(1) 阻塞模式：只读open要阻塞到某个进程为写而打开此FIFO，只写open要阻塞到某个进程为读而打开此FIFO;<br>(2) 非阻塞模式：只读立即返回，如果没有进程为读而打开FIFO，则只写open返回-1，erron=ENXIO;</p>
+<h2 id="共享存储映射（mmap）"><a href="#共享存储映射（mmap）" class="headerlink" title="共享存储映射（mmap）"></a>共享存储映射（mmap）</h2><h3 id="mmap"><a href="#mmap" class="headerlink" title="mmap()"></a>mmap()</h3><blockquote>
+</blockquote>
+<pre><code>void* mmap(void* addr,size_t length,int prot,int flags,int fd,off_t offset);
+</code></pre><p>参数：<br>addr:建立映射区首地址，由linux内核指定，使用时直接传递NULL<br>length：申请创建映射区大小(ftruncate(),lseek()拓展文件大小)<br>prot：映射区权限PROT_READ、PROT_WRITE、PROT_READ|PROT_WRITE<br>flags：标志位参数（常用于设定更新物理区域、设置共享、创建匿名映射区）<br>MAP_SHARED:会将映射区所做的操作反映到物理设备（磁盘）上<br>MAP_PRIVATE:映射区所做的修改不会反映到物理设备上。<br>fd：用来建立映射区的文件描述符<br>offset：映射文件的偏移（4K的整数倍），只映射文件的一部分，产生映射空间</p>
+<p>返回值：成功：返回创建的映射区首地址；失败：MAP_FAILED宏</p>
+<h3 id="匿名映射"><a href="#匿名映射" class="headerlink" title="匿名映射"></a>匿名映射</h3><p>因为每次创建映射区一定要依赖一个文件才能实现，通常为了建立映射区要open一个temp文件，创建好了在unlink()、close()掉、比较麻烦。为此可以直接使用匿名映射来替代，其实linux系统为我们提供了创建匿名映射的方法，无需依赖一个文件即可创建映射区，同样需要借助标志位参数flags来指定。<br>使用MAP_ANONYMOUS(或MAP_ANON),如：</p>
+<pre><code>int *=mmap(NULL,4,PROT_READ|PROT_WRITE,MAP_SHARED|MAP_ANONYMOUS,-1,0);
+</code></pre><p>“4”这个参数就可以随意填写了，想要多大填多大。</p>
+<h3 id="munmap"><a href="#munmap" class="headerlink" title="munmap()"></a>munmap()</h3><blockquote>
+<p>注意要释放映射空间</p>
+</blockquote>
+<pre><code>int munmap(void* addr,size_t length);
+</code></pre><h2 id="本地套接字"><a href="#本地套接字" class="headerlink" title="本地套接字"></a>本地套接字</h2><hr>
+<h1 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h1><p><strong>打印所有环境变量</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">extern char** environ;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	int i;</span><br><span class="line">	for(int i=0;environ[i];i++)</span><br><span class="line">	&#123;</span><br><span class="line">		printf(&quot;%s\n&quot;,environ[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="getenv"><a href="#getenv" class="headerlink" title="getenv()"></a>getenv()</h3><blockquote>
+<p>获取环境变量</p>
+</blockquote>
+<h3 id="setenv"><a href="#setenv" class="headerlink" title="setenv()"></a>setenv()</h3><blockquote>
+<p>设置环境变量</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/15/LINUX系统编程-进程控制/">Linux系统编程-进程控制</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
+  <p><span>发布时间:</span>2018年01月15日 - 10:01</p>
+  <p><span>最后更新:</span>2018年02月24日 - 10:02</p>
+  <p><span>原始链接:</span><a href="/2018/01/15/LINUX系统编程-进程控制/" title="Linux系统编程-进程控制">http://hengliy.github.io/2018/01/15/LINUX系统编程-进程控制/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/01/15/LINUX系统编程-进程控制/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LINUX/" rel="tag"># linux</a>
+          
+            <a href="/tags/进程/" rel="tag"># 进程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/12/LINUX系统编程-文件操作/" rel="next" title="Linux系统编程-文件操作">
+                <i class="fa fa-chevron-left"></i> Linux系统编程-文件操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/16/LINUX系统编程-进程间通信练手/" rel="prev" title="linux系统编程-进程间通信练手">
+                linux系统编程-进程间通信练手 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/favicon.jpg"
+                alt="Hengliy" />
+            
+              <p class="site-author-name" itemprop="name">Hengliy</p>
+              <p class="site-description motion-element" itemprop="description">hold my heart</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Hengliy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hengliy_li@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程控制"><span class="nav-number">1.</span> <span class="nav-text">进程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#task-struct结构体"><span class="nav-number">1.1.</span> <span class="nav-text">task_struct结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">1.2.</span> <span class="nav-text">fork()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程共享"><span class="nav-number">1.3.</span> <span class="nav-text">进程共享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#父子进程共享"><span class="nav-number">1.3.1.</span> <span class="nav-text">父子进程共享</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#孤儿进程-amp-僵尸进程"><span class="nav-number">1.4.</span> <span class="nav-text">孤儿进程&僵尸进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait"><span class="nav-number">1.5.</span> <span class="nav-text">wait()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#waitpid"><span class="nav-number">1.6.</span> <span class="nav-text">waitpid()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#exec函数族"><span class="nav-number">2.</span> <span class="nav-text">exec函数族</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#exevce-系统调用"><span class="nav-number">2.1.</span> <span class="nav-text">exevce()系统调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#execlp"><span class="nav-number">2.2.</span> <span class="nav-text">execlp()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#execl"><span class="nav-number">2.3.</span> <span class="nav-text">execl()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#execvp"><span class="nav-number">2.4.</span> <span class="nav-text">execvp()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程间通信（Inter-Process-Communication）"><span class="nav-number">3.</span> <span class="nav-text">进程间通信（Inter-Process Communication）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#管道（pipe）"><span class="nav-number">3.1.</span> <span class="nav-text">管道（pipe）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pipe"><span class="nav-number">3.1.1.</span> <span class="nav-text">pipe()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FIFO（有名管道）"><span class="nav-number">3.2.</span> <span class="nav-text">FIFO（有名管道）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享存储映射（mmap）"><span class="nav-number">3.3.</span> <span class="nav-text">共享存储映射（mmap）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mmap"><span class="nav-number">3.3.1.</span> <span class="nav-text">mmap()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匿名映射"><span class="nav-number">3.3.2.</span> <span class="nav-text">匿名映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#munmap"><span class="nav-number">3.3.3.</span> <span class="nav-text">munmap()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地套接字"><span class="nav-number">3.4.</span> <span class="nav-text">本地套接字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境变量"><span class="nav-number">4.</span> <span class="nav-text">环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#getenv"><span class="nav-number">4.0.1.</span> <span class="nav-text">getenv()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setenv"><span class="nav-number">4.0.2.</span> <span class="nav-text">setenv()</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hengliy</span>
+
+  
+</div>
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+</html>

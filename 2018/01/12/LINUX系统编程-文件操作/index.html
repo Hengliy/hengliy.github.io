@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/ >
+<script>
+    (function(){
+        if(''){
+            if (prompt('please entry article password') !== ''){
+                alert('password wrong!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="linux,文件系统," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="列出常用文件操作的系统函数与c库函数，在这里做笔记备忘，更多函数可用man命令查询并学习。 参考资料：  《linux系统编程》，《Unix/Linux系统编程实践》http://blog.csdn.net/zjf280441589/article/details/43875987http://akaedu.githu">
+<meta name="keywords" content="linux,文件系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统编程-文件操作">
+<meta property="og:url" content="http://hengliy.github.io/2018/01/12/LINUX系统编程-文件操作/index.html">
+<meta property="og:site_name" content="Hengliy_Space">
+<meta property="og:description" content="列出常用文件操作的系统函数与c库函数，在这里做笔记备忘，更多函数可用man命令查询并学习。 参考资料：  《linux系统编程》，《Unix/Linux系统编程实践》http://blog.csdn.net/zjf280441589/article/details/43875987http://akaedu.github.io/book/ch28s02.html  Linux的设计哲学: 一切皆文">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-23T17:35:24.998Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux系统编程-文件操作">
+<meta name="twitter:description" content="列出常用文件操作的系统函数与c库函数，在这里做笔记备忘，更多函数可用man命令查询并学习。 参考资料：  《linux系统编程》，《Unix/Linux系统编程实践》http://blog.csdn.net/zjf280441589/article/details/43875987http://akaedu.github.io/book/ch28s02.html  Linux的设计哲学: 一切皆文">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hengliy.github.io/2018/01/12/LINUX系统编程-文件操作/"/>
+
+
+
+
+
+  <title>Linux系统编程-文件操作 | Hengliy_Space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hengliy_Space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">扎实的基础是最牛X的技术！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hengliy.github.io/2018/01/12/LINUX系统编程-文件操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hengliy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengliy_Space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux系统编程-文件操作</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T10:24:39+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LINUX系统编程/" itemprop="url" rel="index">
+                    <span itemprop="name">linux系统编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>列出常用文件操作的系统函数与c库函数，在这里做笔记备忘，更多函数可用man命令查询并学习。</p>
+<p>参考资料：</p>
+<blockquote>
+<p>《linux系统编程》，《Unix/Linux系统编程实践》<br><a href="http://blog.csdn.net/zjf280441589/article/details/43875987" target="_blank" rel="noopener">http://blog.csdn.net/zjf280441589/article/details/43875987</a><br><a href="http://akaedu.github.io/book/ch28s02.html" target="_blank" rel="noopener">http://akaedu.github.io/book/ch28s02.html</a></p>
+</blockquote>
+<p><strong>Linux的设计哲学: 一切皆文件</strong>所有的文件或设备都对应一个文件描述符,包括输入输出都是写入到文件中，可见文件操作的重要性啊</p>
+<p><strong>文件类型：</strong></p>
+<pre><code>- 文件
+d 目录
+l 符号链接
+</code></pre><p><strong>伪文件（不占用磁盘空间）：</strong></p>
+<pre><code>s 套接字
+b 块设备
+c 字符设备
+c 管道
+</code></pre><blockquote>
+<p>1.一个进程启动时, 默认已经打开了3个文件, 标准输入(0, STDIN_FILENO), 标准输出(1, STDOUT_FILENO), 标准错误输出(2, STDERR_FILENO), 这些常量定义在unistd.h头文件中;  其中, 文件描述符基本上是与文件描述指针一一对应的, 如文件描述符0,1,2 对应 stdin, stdout, stderr;<br>2.文件描述符与文件指针的转换<br>fileno: 将文件指针转换成文件描述符<br>       int fileno(FILE <em>stream);<br>fdopen: 将文件描述符转换成文件指针<br>       FILE </em>fdopen(int fd, const char *mode);</p>
+</blockquote>
+<h1 id="系统函数："><a href="#系统函数：" class="headerlink" title="系统函数："></a>系统函数：</h1><p>##　文件操作：</p>
+<h3 id="open"><a href="#open" class="headerlink" title="open()"></a>open()</h3><blockquote>
+<p>打开文件，返回文件描述符</p>
+</blockquote>
+<pre><code>int open(const char *pathname, int flags);  
+int open(const char *pathname, int flags, mode_t mode);
+</code></pre><p>参数:<br>   pathname:     文件名, 可以包含[绝对/相对]路径名;<br>   flags:        文件打开模式;(O_RDONLY,O_WRONLY,O_RDWR,O_APPEND…)<br>   mode:        用来指定对文件所有者, 文件用户组以及系统中的其他用户的访问权限;  </p>
+<h3 id="close"><a href="#close" class="headerlink" title="close()"></a>close()</h3><blockquote>
+<p>释放文件描述符，与open写在一起别忘了关文件</p>
+</blockquote>
+<pre><code>int close(int fd);
+</code></pre><p>###　read()</p>
+<blockquote>
+<p>读取一个文件内容到buffer</p>
+</blockquote>
+<pre><code>ssize_t read(int fd, void *buffer, size_t count);
+</code></pre><h3 id="write"><a href="#write" class="headerlink" title="write()"></a>write()</h3><blockquote>
+<p>写入buffer内容到内核缓冲区，不会真正的写入，必须要输入缓冲区猜，<br>有三种情况：1.调用fsync()函数，立即刷入　( <strong>int fsync(int fd)</strong>)<br>　　　　　　２．close文件<br> 　　　　　　3. 缓冲区满</p>
+</blockquote>
+<pre><code>ssize_t write(int fd, const void *buf, size_t count);  
+</code></pre><h3 id="lseek"><a href="#lseek" class="headerlink" title="lseek()"></a>lseek()</h3><blockquote>
+<p>文件的随机读写</p>
+</blockquote>
+<pre><code>off_t lseek(int fd, off_t offset, int whence);
+</code></pre><p>参数：whence:SEEK_SET(文件开头)，SEEK_CUR(当前位置)，SEEK_END(文件结尾)<br>　　　offset:相对于whence的偏移量<br>返回值：新的文件偏移值</p>
+<h3 id="stat"><a href="#stat" class="headerlink" title="stat()"></a>stat()</h3><blockquote>
+<p>获取文件信息到buf的stat结构体里面,可以使用stat命令打印一个文件stat结构体内的信息(inode中的信息，不过inode是内核层的)，这里涉及到文件的信息存储，可以看前面的一篇文章。</p>
+</blockquote>
+<pre><code>int stat(FAR const char *path, FAR struct stat *buf)  
+</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>  </span></span><br><span class="line"><span class="class">&#123;</span>  </span><br><span class="line">    <span class="keyword">dev_t</span>     st_dev;     <span class="comment">/* ID of device containing file */</span>  </span><br><span class="line">    <span class="keyword">ino_t</span>     st_ino;     <span class="comment">/* inode number */</span>  </span><br><span class="line">    <span class="keyword">mode_t</span>    st_mode;    <span class="comment">/* protection */</span>  </span><br><span class="line">    <span class="keyword">nlink_t</span>   st_nlink;   <span class="comment">/* number of hard links */</span>  </span><br><span class="line">    <span class="keyword">uid_t</span>     st_uid;     <span class="comment">/* user ID of owner */</span>  </span><br><span class="line">    <span class="keyword">gid_t</span>     st_gid;     <span class="comment">/* group ID of owner */</span>  </span><br><span class="line">    <span class="keyword">dev_t</span>     st_rdev;    <span class="comment">/* device ID (if special file) */</span>  </span><br><span class="line">    <span class="keyword">off_t</span>     st_size;    <span class="comment">/* total size, in bytes */</span>  </span><br><span class="line">    <span class="keyword">blksize_t</span> st_blksize; <span class="comment">/* blocksize for filesystem I/O */</span>  </span><br><span class="line">    <span class="keyword">blkcnt_t</span>  st_blocks;  <span class="comment">/* number of 512B blocks allocated */</span>  </span><br><span class="line">    <span class="keyword">time_t</span>    st_atime;   <span class="comment">/* time of last access */</span>  </span><br><span class="line">    <span class="keyword">time_t</span>    st_mtime;   <span class="comment">/* time of last modification */</span>  </span><br><span class="line">    <span class="keyword">time_t</span>    st_ctime;   <span class="comment">/* time of last status change */</span>  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="dup-dup2"><a href="#dup-dup2" class="headerlink" title="dup,dup2()"></a>dup,dup2()</h3><blockquote>
+<p>复制文件描述符，返回的是未被占用的编号最小的文件描述符号</p>
+</blockquote>
+<pre><code>dup2(old，new)；//dup2(2,3);2复制到3,3也就和2一样指向了stderror；
+</code></pre><h3 id="fcntl-："><a href="#fcntl-：" class="headerlink" title="fcntl()："></a>fcntl()：</h3><blockquote>
+<p>改变已经打开文件的属性,可读可写等<br>    int fcntl (int fd,int cmd);<br>    int fcntl (int fd,int cmd,long arg);<br>    int fcntl (int fd,int cmd,struct flock* lock);</p>
+</blockquote>
+<h3 id="ftruncate-与truncate"><a href="#ftruncate-与truncate" class="headerlink" title="ftruncate()与truncate()"></a>ftruncate()与truncate()</h3><blockquote>
+<p>改变文件大小</p>
+</blockquote>
+<h3 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h3><p><strong>仿写cp命令</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> COPYMODE 0644</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BUFFERSIZE 4096</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cp</span><span class="params">(<span class="keyword">int</span> ac,<span class="keyword">char</span> * av[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> in_fd,out_fd;</span><br><span class="line">    <span class="keyword">char</span> *buffer=<span class="keyword">new</span> <span class="keyword">char</span>(BUFFERSIZE);</span><br><span class="line">    <span class="keyword">if</span>((in_fd=open(av[<span class="number">1</span>],O_RDONLY))==<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"open false"</span>&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//oops("cannot open",av[1]);</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>((out_fd=creat(av[<span class="number">2</span>],COPYMODE))==<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"create file false"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    <span class="keyword">int</span> count=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>((size=read(in_fd,buffer,BUFFERSIZE))&gt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        count++;</span><br><span class="line">        <span class="keyword">if</span>(write(out_fd,buffer,size)!=size)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"write error"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(size==<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"read error"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(close(in_fd)==<span class="number">-1</span>||close(out_fd)==<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"error"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="目录操作"><a href="#目录操作" class="headerlink" title="目录操作"></a>目录操作</h2><h3 id="opendir"><a href="#opendir" class="headerlink" title="opendir()"></a>opendir()</h3><blockquote>
+<p>打开目录，返回目录指针</p>
+</blockquote>
+<pre><code>DIR *opendir(const char *name);
+</code></pre><h3 id="chdir"><a href="#chdir" class="headerlink" title="chdir()"></a>chdir()</h3><blockquote>
+<p>修改当前进程的路径</p>
+</blockquote>
+<h3 id="getcwd"><a href="#getcwd" class="headerlink" title="getcwd()"></a>getcwd()</h3><p>获取当前进程工作目录</p>
+<h3 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir()"></a>mkdir()</h3><blockquote>
+<p>创建目录</p>
+</blockquote>
+<pre><code>int mkdir(const char *pathname, mode_t mode);  
+</code></pre><h3 id="rmdir"><a href="#rmdir" class="headerlink" title="rmdir()"></a>rmdir()</h3><blockquote>
+<p>删除一个空目录</p>
+</blockquote>
+<pre><code>int rmdir(const char *pathname);
+</code></pre><h3 id="readdir"><a href="#readdir" class="headerlink" title="readdir()"></a>readdir()</h3><blockquote>
+<p>读目录，返回一个dirent结构（dentry）</p>
+</blockquote>
+<pre><code>struct dirent *readdir(DIR *dirp);
+</code></pre><p>返回：返回一个指向dirent结构的指针,dierent结构可以参见上一篇</p>
+<h3 id="closedir"><a href="#closedir" class="headerlink" title="closedir()"></a>closedir()</h3><blockquote>
+<p>关闭目录</p>
+</blockquote>
+<pre><code>int closedir(DIR *dirp); 
+</code></pre><h3 id="Chmod-fchmod"><a href="#Chmod-fchmod" class="headerlink" title="Chmod, fchmod"></a>Chmod, fchmod</h3><blockquote>
+<p>更改目录权限</p>
+</blockquote>
+<pre><code>int chmod(const char *path, mode_t mode);  
+int fchmod(int fd, mode_t mode);  
+</code></pre><p>###　chown,fchown</p>
+<blockquote>
+<p>更改文件所有者/所属组</p>
+</blockquote>
+<pre><code>int chown(const char *path, uid_t owner, gid_t group);  
+int fchown(int fd, uid_t owner, gid_t group);  
+</code></pre><h3 id="举例0"><a href="#举例0" class="headerlink" title="举例0"></a>举例0</h3><p><strong>递归获取普通目录下文件的个数：</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_file_count</span><span class="params">(<span class="keyword">char</span>* root)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//打开文件</span></span><br><span class="line">    DIR* dir=<span class="literal">NULL</span>;</span><br><span class="line">    dir=opendir(root);</span><br><span class="line">    <span class="keyword">if</span>(dir==<span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"error"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">dirent</span>* <span class="title">ptr</span> =<span class="title">NULL</span>;</span></span><br><span class="line">    <span class="keyword">char</span> path[<span class="number">1024</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> total=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>((ptr=readdir(dir))!=<span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//过滤. 和..</span></span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">strcmp</span>(ptr-&gt;d_name,<span class="string">"."</span>)==<span class="number">0</span>||<span class="built_in">strcmp</span>(ptr-&gt;d_name,<span class="string">".."</span>)==<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ptr-&gt;d_type==DT_DIR)</span><br><span class="line">        &#123;</span><br><span class="line">        	<span class="comment">//转换路径并递归调用 </span></span><br><span class="line">            <span class="built_in">sprintf</span>(path,<span class="string">"%s/%s"</span>,root,ptr-&gt;d_name);</span><br><span class="line">			total+=get_file_count(path);</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="keyword">if</span>(ptr-&gt;d_type==DT_REG)</span><br><span class="line">		&#123;</span><br><span class="line">			total++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;   </span><br><span class="line">	closedir(dir);</span><br><span class="line">	<span class="keyword">return</span> total;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><h3 id="link"><a href="#link" class="headerlink" title="link()"></a>link()</h3><h3 id="unlink"><a href="#unlink" class="headerlink" title="unlink()"></a>unlink()</h3><blockquote>
+<p>删除临时文件目录项，使之具备被释放的条件</p>
+</blockquote>
+<h1 id="c库函数"><a href="#c库函数" class="headerlink" title="c库函数"></a>c库函数</h1><h3 id="rename"><a href="#rename" class="headerlink" title="rename()"></a>rename()</h3><blockquote>
+<p>重命名文件</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/12/LINUX系统编程-文件操作/">Linux系统编程-文件操作</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
+  <p><span>发布时间:</span>2018年01月12日 - 10:01</p>
+  <p><span>最后更新:</span>2018年02月24日 - 01:02</p>
+  <p><span>原始链接:</span><a href="/2018/01/12/LINUX系统编程-文件操作/" title="Linux系统编程-文件操作">http://hengliy.github.io/2018/01/12/LINUX系统编程-文件操作/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/01/12/LINUX系统编程-文件操作/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LINUX/" rel="tag"># linux</a>
+          
+            <a href="/tags/文件系统/" rel="tag"># 文件系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/03/大三上总结-MD/" rel="next" title="大三上总结.md">
+                <i class="fa fa-chevron-left"></i> 大三上总结.md
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/15/LINUX系统编程-进程控制/" rel="prev" title="Linux系统编程-进程控制">
+                Linux系统编程-进程控制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/favicon.jpg"
+                alt="Hengliy" />
+            
+              <p class="site-author-name" itemprop="name">Hengliy</p>
+              <p class="site-description motion-element" itemprop="description">hold my heart</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Hengliy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hengliy_li@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#系统函数："><span class="nav-number">1.</span> <span class="nav-text">系统函数：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#open"><span class="nav-number">1.0.1.</span> <span class="nav-text">open()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close"><span class="nav-number">1.0.2.</span> <span class="nav-text">close()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#write"><span class="nav-number">1.0.3.</span> <span class="nav-text">write()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lseek"><span class="nav-number">1.0.4.</span> <span class="nav-text">lseek()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stat"><span class="nav-number">1.0.5.</span> <span class="nav-text">stat()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dup-dup2"><span class="nav-number">1.0.6.</span> <span class="nav-text">dup,dup2()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fcntl-："><span class="nav-number">1.0.7.</span> <span class="nav-text">fcntl()：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ftruncate-与truncate"><span class="nav-number">1.0.8.</span> <span class="nav-text">ftruncate()与truncate()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#举例："><span class="nav-number">1.0.9.</span> <span class="nav-text">举例：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录操作"><span class="nav-number">1.1.</span> <span class="nav-text">目录操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#opendir"><span class="nav-number">1.1.1.</span> <span class="nav-text">opendir()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chdir"><span class="nav-number">1.1.2.</span> <span class="nav-text">chdir()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getcwd"><span class="nav-number">1.1.3.</span> <span class="nav-text">getcwd()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdir"><span class="nav-number">1.1.4.</span> <span class="nav-text">mkdir()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rmdir"><span class="nav-number">1.1.5.</span> <span class="nav-text">rmdir()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#readdir"><span class="nav-number">1.1.6.</span> <span class="nav-text">readdir()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#closedir"><span class="nav-number">1.1.7.</span> <span class="nav-text">closedir()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chmod-fchmod"><span class="nav-number">1.1.8.</span> <span class="nav-text">Chmod, fchmod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#举例0"><span class="nav-number">1.1.9.</span> <span class="nav-text">举例0</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接"><span class="nav-number">1.2.</span> <span class="nav-text">链接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#link"><span class="nav-number">1.2.1.</span> <span class="nav-text">link()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unlink"><span class="nav-number">1.2.2.</span> <span class="nav-text">unlink()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c库函数"><span class="nav-number">2.</span> <span class="nav-text">c库函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rename"><span class="nav-number">2.0.1.</span> <span class="nav-text">rename()</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hengliy</span>
+
+  
+</div>
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+</html>

@@ -124,7 +124,7 @@
 <meta property="og:site_name" content="Hengliy_Space">
 <meta property="og:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-11T10:45:34.000Z">
+<meta property="og:updated_time" content="2018-02-22T11:38:18.563Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="问题记录">
 <meta name="twitter:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”">
@@ -462,6 +462,13 @@
 <p>基本类型的对象没有析构函数，所以回收基本类型组成的数组空间用 delete 和 delete[] 都是应该可以的；但是对于类对象数组，只能用 delete[]。对于 new 的单个对象，只能用 delete 不能用 delete[] 回收空间。 </p>
 </blockquote>
 <hr>
+<blockquote>
+<p>在《C和指针》这本书里有介绍，int <em>p1=new int[10];该语句给指针p1分配内存，没有对指针初始化， int </em>p2=new int<a href="">10</a>;该语句给指针p2分配内存，并初始化指针*</p>
+</blockquote>
+<p>–</p>
+<blockquote>
+</blockquote>
+<hr>
 <h2 id="explict关键字-（类的强制类型转换）"><a href="#explict关键字-（类的强制类型转换）" class="headerlink" title="explict关键字 （类的强制类型转换）"></a>explict关键字 （类的强制类型转换）</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Fraction(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="comment">//不用定义返回值。</span></span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">double</span>)(m_numberator/m_denominator);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line"><span class="keyword">double</span> d=<span class="number">4</span>+f;<span class="comment">//会自动强制类型转换，因为定义了double的重载</span></span><br></pre></td></tr></table></figure>
 <p><strong>non-explicit-one-argument ctor</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Fraction(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	Fraction <span class="keyword">operator</span> + (<span class="keyword">const</span> Fraction&amp; f)&#123;</span><br><span class="line">		<span class="keyword">return</span> Fraction(...);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">Fraction d=f+<span class="number">4</span>;<span class="comment">//调用构造函数将4转换成Fraction(4,1);然后调用operator+</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>explicit</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">explicit</span> <span class="title">Fraction</span><span class="params">(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><span class="comment">//加入关键字</span></span></span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	Fraction <span class="keyword">operator</span> + (<span class="keyword">const</span> Fraction&amp; f)&#123;</span><br><span class="line">		<span class="keyword">return</span> Fraction(...);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">Fraction d=f+<span class="number">4</span>;<span class="comment">//【Error】 不能转换</span></span><br></pre></td></tr></table></figure></p>
@@ -494,7 +501,7 @@
   <p><span>本文标题:</span><a href="/2018/02/08/问题记录/">问题记录</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2018年02月08日 - 22:02</p>
-  <p><span>最后更新:</span>2018年02月11日 - 18:02</p>
+  <p><span>最后更新:</span>2018年02月22日 - 19:02</p>
   <p><span>原始链接:</span><a href="/2018/02/08/问题记录/" title="问题记录">http://hengliy.github.io/2018/02/08/问题记录/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/02/08/问题记录/"  aria-label="复制成功！"></i></span>
   </p>
@@ -544,8 +551,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/12/LINUX系统编程-文件操作/" rel="prev" title="Linux系统编程-文件操作">
-                Linux系统编程-文件操作 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/02/12/hello-world/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -627,7 +634,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -638,7 +645,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -649,7 +656,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

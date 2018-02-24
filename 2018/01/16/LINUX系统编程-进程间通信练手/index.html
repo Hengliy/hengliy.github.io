@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/ >
+<script>
+    (function(){
+        if(''){
+            if (prompt('please entry article password') !== ''){
+                alert('password wrong!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="linux,进程," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="write1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253/*********************************************************">
+<meta name="keywords" content="linux,进程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux系统编程-进程间通信练手">
+<meta property="og:url" content="http://hengliy.github.io/2018/01/16/LINUX系统编程-进程间通信练手/index.html">
+<meta property="og:site_name" content="Hengliy_Space">
+<meta property="og:description" content="write1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253/*************************************************************************    &amp;gt; File Name: writ">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://hengliy.github.io/images/progresscom.png">
+<meta property="og:updated_time" content="2018-02-24T03:14:21.001Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux系统编程-进程间通信练手">
+<meta name="twitter:description" content="write1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253/*************************************************************************    &amp;gt; File Name: writ">
+<meta name="twitter:image" content="http://hengliy.github.io/images/progresscom.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hengliy.github.io/2018/01/16/LINUX系统编程-进程间通信练手/"/>
+
+
+
+
+
+  <title>linux系统编程-进程间通信练手 | Hengliy_Space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hengliy_Space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">扎实的基础是最牛X的技术！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hengliy.github.io/2018/01/16/LINUX系统编程-进程间通信练手/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hengliy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengliy_Space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux系统编程-进程间通信练手</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T14:04:12+08:00">
+                2018-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LINUX系统编程/" itemprop="url" rel="index">
+                    <span itemprop="name">linux系统编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight c"><figcaption><span>write</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: write.c</span></span><br><span class="line"><span class="comment">    &gt; Author: Hengliy</span></span><br><span class="line"><span class="comment">    &gt; Mail hengliy_li@163.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: Fri 23 Jan 2018 06:01:46 AM EST</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">STU</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> id;</span><br><span class="line">	<span class="keyword">char</span>* name;</span><br><span class="line">	<span class="keyword">char</span> sex;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> fd;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">STU</span> <span class="title">student</span>=&#123;</span><span class="number">10</span>,<span class="string">"hengliy"</span>,<span class="string">'m'</span>&#125;;</span><br><span class="line">	<span class="keyword">char</span> *mm;</span><br><span class="line">	<span class="keyword">if</span>(argc&lt;<span class="number">2</span>)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"argc&lt;2"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fd=open(argv[<span class="number">1</span>],O_RDWR|O_CREAT,<span class="number">0664</span>);</span><br><span class="line">	ftruncate(fd,<span class="keyword">sizeof</span>(student));</span><br><span class="line">	</span><br><span class="line">	mm=mmap(<span class="literal">NULL</span>,<span class="keyword">sizeof</span>(student),PROT_READ|PROT_WRITE,MAP_SHARED,fd,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span>(mm==MAP_FAILED)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"error"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	close(fd);</span><br><span class="line">	<span class="comment">//循环修改映射文件</span></span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">		<span class="comment">//映射到文件就可以直接用memcpy搬运内存啦!</span></span><br><span class="line">		<span class="built_in">memcpy</span>(mm,&amp;student,<span class="keyword">sizeof</span>(student));</span><br><span class="line">		student.id++;</span><br><span class="line">		sleep(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	munmap(mm,<span class="keyword">sizeof</span>(student));</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>read</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: write.c</span></span><br><span class="line"><span class="comment">    &gt; Author: Hengliy</span></span><br><span class="line"><span class="comment">    &gt; Mail hengliy_li@163.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: Wed 21 Jan 2018 10:03:30 PM EST</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">STU</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> id;</span><br><span class="line">	<span class="keyword">char</span> name[<span class="number">20</span>];</span><br><span class="line">	<span class="keyword">char</span> sex;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sys_err</span><span class="params">(<span class="keyword">char</span>* str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	perror(str);</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> fd;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">STU</span> <span class="title">student</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">STU</span>* <span class="title">mm</span>;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(argc&lt;<span class="number">2</span>)&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"argc&lt;2"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	fd=open(argv[<span class="number">1</span>],O_RDONLY);</span><br><span class="line">	<span class="keyword">if</span>(fd==<span class="number">-1</span>)</span><br><span class="line">		sys_err(<span class="string">"open error"</span>);</span><br><span class="line">	<span class="comment">//进行地址空间映射到fd</span></span><br><span class="line">	mm=mmap(<span class="literal">NULL</span>,<span class="keyword">sizeof</span>(student),PROT_READ,MAP_SHARED,fd,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span>(mm==MAP_FAILED)</span><br><span class="line">		sys_err(<span class="string">"map error"</span>);</span><br><span class="line"></span><br><span class="line">	close(fd);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"id=%d name=%s sex=%c\n"</span>,mm-&gt;id,mm-&gt;name,mm-&gt;sex);</span><br><span class="line">		sleep(<span class="number">2</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//别忘了取消映射</span></span><br><span class="line">	munmap(mm,<span class="keyword">sizeof</span>(student));</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="多进程拷贝大文件"><a href="#多进程拷贝大文件" class="headerlink" title="多进程拷贝大文件"></a>多进程拷贝大文件</h1><p>实现拷贝一个超大文件，为提高效率，可以采用多进程并行拷贝的方法实现；假设有n个进程进行拷贝，每个进程拷贝len/n个字节，最后一个进程拷贝剩下的len%（len/n）个字节。<br>为了降低复杂度，可以用mmap来进行拷贝，通过指针操作内存地址，设置内个进程拷贝的起始，结束位置，使用MAP_SHARED选项将内存中所做的修改反映到物理磁盘上。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: ncopy.c</span></span><br><span class="line"><span class="comment">    &gt; Author: Hengliy</span></span><br><span class="line"><span class="comment">    &gt; Mail hengliy_li@163.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: Fri 23 Jan 2018 07:45:15 AM EST</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> src_fd,dst_fd;</span><br><span class="line">	<span class="keyword">int</span> per_length=<span class="number">4096</span>,last_length,n,i,lseek=<span class="number">0</span>,file_length=<span class="number">0</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">file_stat</span>;</span></span><br><span class="line">	<span class="keyword">char</span>* src_p,*dst_p;</span><br><span class="line">	<span class="keyword">pid_t</span> pid;</span><br><span class="line">	<span class="keyword">if</span>(argc&lt;<span class="number">3</span>)&#123;</span><br><span class="line">		perror(<span class="string">"open src error"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="comment">//打开源文件</span></span><br><span class="line">	<span class="keyword">if</span>((src_fd=open(argv[<span class="number">1</span>],O_RDWR))==<span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"open srcFile error"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//用户具有读写权限，组用户和其他用户只有读权限</span></span><br><span class="line">	<span class="keyword">if</span>((dst_fd=open(argv[<span class="number">2</span>],O_CREAT|O_RDWR|O_TRUNC,<span class="number">0644</span>))==<span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"open dstFile error"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>((stat(argv[<span class="number">1</span>],&amp;file_stat))==<span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"get stat error"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;	</span><br><span class="line">	file_length=file_stat.st_size;</span><br><span class="line">	n=file_length/per_length;</span><br><span class="line">	last_length=file_length%per_length;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DEBUG</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"file_length=%d per_length=%d last_length=%d n=%d\n"</span>,file_length,per_length,last_length,n);	</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>((ftruncate(dst_fd,file_length)==<span class="number">-1</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		perror(<span class="string">"ftruncate error"</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		pid=fork();</span><br><span class="line">		<span class="keyword">if</span>(pid==<span class="number">0</span>)<span class="comment">//子进程</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"i'm %dth process,parent_pid=%u,lseek=%d\n"</span>,i,getppid(),lseek);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(pid&gt;<span class="number">0</span>)<span class="comment">//如果是父进程</span></span><br><span class="line">		&#123;</span><br><span class="line">			sleep(<span class="number">1</span>);</span><br><span class="line">			lseek+=per_length;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			perror(<span class="string">"open error"</span>);</span><br><span class="line">			<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DEBUG</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"ready to copy %dth mmap\n"</span>,i);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"> 	<span class="keyword">if</span>(i &lt; n+<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">		<span class="keyword">if</span>(lseek+per_length &lt; file_length)<span class="comment">//复制分割好的部分 </span></span><br><span class="line">		&#123;</span><br><span class="line">            src_p = mmap(<span class="literal">NULL</span>, per_length, PROT_READ|PROT_WRITE, MAP_SHARED, src_fd, lseek);</span><br><span class="line">            <span class="keyword">if</span>(src_p == MAP_FAILED)&#123;</span><br><span class="line">                perror(<span class="string">"src mmap error"</span>);</span><br><span class="line">            	<span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            dst_p = mmap(<span class="literal">NULL</span>, per_length, PROT_READ|PROT_WRITE, MAP_SHARED, dst_fd, lseek);</span><br><span class="line">            <span class="keyword">if</span>(dst_p == MAP_FAILED)&#123;</span><br><span class="line">                perror(<span class="string">"dst mmap error"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">memcpy</span>(dst_p, src_p, per_length);</span><br><span class="line">            munmap(src_p, per_length);</span><br><span class="line">            munmap(dst_p, per_length);</span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">else</span><span class="comment">//剩余部分的复制</span></span><br><span class="line">        &#123;</span><br><span class="line">#ifdef DEBUG</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"last_size is %d\n"</span>, last_length);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">            src_p = mmap(<span class="literal">NULL</span>, last_length, PROT_READ|PROT_WRITE, MAP_SHARED, src_fd, lseek);</span><br><span class="line">            <span class="keyword">if</span>(src_p == MAP_FAILED)&#123;</span><br><span class="line">                perror(<span class="string">"last_src mmap error"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            dst_p = mmap(<span class="literal">NULL</span>, last_length, PROT_READ|PROT_WRITE, MAP_SHARED, dst_fd, lseek);</span><br><span class="line">            <span class="keyword">if</span>(dst_p == MAP_FAILED)&#123;</span><br><span class="line">                perror(<span class="string">"last_dst mmap error"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">memcpy</span>(dst_p, src_p, last_length);</span><br><span class="line">            munmap(src_p, last_length);</span><br><span class="line">            munmap(dst_p, last_length);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    close(src_fd);</span><br><span class="line">    close(dst_fd);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="使用FIFO实现本地聊天室"><a href="#使用FIFO实现本地聊天室" class="headerlink" title="使用FIFO实现本地聊天室"></a>使用FIFO实现本地聊天室</h1><p><img src="/images/progresscom.png" alt=""></p>
+<p>1、服务器端要有一个公共的共享的管道，用来实现用户到服务器之间的通信，并创建一个链表，用于存储用户登录信息。<br>2、服务器端要跟每一个用户建立一个管道用于服务器与用户之间的通信，并且进行用户数据转发，当用户退出之后，这条管道自动删除。<br>3、数据包的格式，首先是协议号，源id，目标id，数据内容</p>
+<p>服务端思路<br>1.先创建一个公共管道，接收客户端的消息<br>2.根据用户登陆后发出的第一个包来创建以用户名命名的管道文件<br>3.用一个链表来存储用户的登录列表，随时增添<br>4.根据用户发送数据包的id号来判定将要执行什么操作，1是登录，2是聊天，4.是退出登录<br>5.转发数据包，是直接发以目标用户名命名的管道文件，但首先要确认登录列表里面有没有目标用户。<br>6.随着用户发出退出登录的包，把用户的登陆信息，管道文件删掉</p>
+<p>客户端思路<br>1.登陆的时候输入用户名<br>2.随着用户登录打开公共信道，向服务器发送登录消息，<br>3.一边接受服务器发来的消息，一遍等待用户输入信息<br>4.把用户的信息自动封装成数据包的格式发给服务器</p>
+<h2 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h2><figure class="highlight c"><figcaption><span>defination.h</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: defination.h</span></span><br><span class="line"><span class="comment">    &gt; Author: Hengliy</span></span><br><span class="line"><span class="comment">    &gt; Mail hengliy_li@163.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: Fri 24 Jan 2018 09:50:10 AM EST</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _DEFINATION_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _DEFINATION_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;limits.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SERVER_FIFO_NAME <span class="meta-string">"/var/tmp/fifoServer"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CLIENT_FIFO_NAME <span class="meta-string">"/var/tmp/fifoClient%d"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BUFF_SIZE PIPE_BUF</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MSG_LEN 64</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CLIENT_FIFO_NAME_LEN 64</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">fifo_msg</span>&#123;</span></span><br><span class="line">    <span class="keyword">pid_t</span> client_pid;</span><br><span class="line">    <span class="keyword">char</span> msg[MSG_LEN];</span><br><span class="line">&#125;<span class="keyword">fifo_msg_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><figure class="highlight c"><figcaption><span>server.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: server.c</span></span><br><span class="line"><span class="comment">    &gt; Author: Hengliy</span></span><br><span class="line"><span class="comment">    &gt; Mail hengliy_li@163.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: Fri 24 Jan 2018 09:42:35 AM EST</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"defination.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> fifo_id = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> server_fifo_fd = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (access(SERVER_FIFO_NAME, F_OK) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        fifo_id = mkfifo(SERVER_FIFO_NAME, <span class="number">0777</span>);</span><br><span class="line">        <span class="keyword">if</span> (fifo_id &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            perror(<span class="string">"mkfifo error\n"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server_fifo_fd = open(SERVER_FIFO_NAME, O_RDONLY);</span><br><span class="line">    <span class="keyword">if</span> (server_fifo_fd &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        perror(<span class="string">"open fifo error\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fifo_msg_t</span> client_msg;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;client_msg, <span class="number">0</span>, <span class="keyword">sizeof</span>(client_msg));</span><br><span class="line">    <span class="keyword">int</span> read_bytes = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        read_bytes = read(server_fifo_fd, &amp;client_msg, <span class="keyword">sizeof</span>(client_msg));</span><br><span class="line">        <span class="keyword">if</span> (read_bytes &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            perror(<span class="string">"read error\n"</span>);</span><br><span class="line">            close(server_fifo_fd);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">char</span> *tmp_msg = client_msg.msg;</span><br><span class="line">        <span class="keyword">while</span> (*tmp_msg)&#123;</span><br><span class="line">            *tmp_msg = <span class="built_in">toupper</span>(*tmp_msg);</span><br><span class="line">            tmp_msg++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">char</span> client_fifo[CLIENT_FIFO_NAME_LEN] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">        <span class="built_in">snprintf</span>(client_fifo, CLIENT_FIFO_NAME_LEN - <span class="number">1</span>, CLIENT_FIFO_NAME, client_msg.client_pid);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> client_fifo_fd = open(client_fifo, O_WRONLY);</span><br><span class="line">        <span class="keyword">if</span> (client_fifo_fd &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            perror(<span class="string">"open client fifo error\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        write(client_fifo_fd, &amp;client_msg, <span class="keyword">sizeof</span>(client_msg));</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"write to client:%d\n"</span>, client_msg.client_pid);</span><br><span class="line">        close(client_fifo_fd);</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">while</span> (read_bytes &gt; <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    close(server_fifo_fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><figure class="highlight c"><figcaption><span>client.c</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*************************************************************************</span></span><br><span class="line"><span class="comment">    &gt; File Name: server.c</span></span><br><span class="line"><span class="comment">    &gt; Author: Hengliy</span></span><br><span class="line"><span class="comment">    &gt; Mail hengliy_li@163.com</span></span><br><span class="line"><span class="comment">    &gt; Created Time: Fri 24 Jan 2018 16:20:39 AM EST</span></span><br><span class="line"><span class="comment"> ************************************************************************/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"defination.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> client_pid = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> server_fifo_fd = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> client_fifo_fd = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    server_fifo_fd = open(SERVER_FIFO_NAME, O_WRONLY);</span><br><span class="line">    <span class="keyword">if</span> (server_fifo_fd &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        perror(<span class="string">"open server fifo error\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    client_pid = getpid();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> client_fifo_name[CLIENT_FIFO_NAME_LEN] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">snprintf</span>(client_fifo_name, CLIENT_FIFO_NAME_LEN - <span class="number">1</span>, CLIENT_FIFO_NAME, client_pid);</span><br><span class="line">    <span class="keyword">if</span> (mkfifo(client_fifo_name, <span class="number">0777</span>) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        perror(<span class="string">"mkfifo client error\n"</span>);</span><br><span class="line">        close(server_fifo_fd);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fifo_msg_t</span> client_msg;</span><br><span class="line">    <span class="built_in">memset</span>(&amp;client_msg, <span class="number">0</span>, <span class="keyword">sizeof</span>(client_msg));</span><br><span class="line">    client_msg.client_pid = client_pid;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> TRY_TIMES 3</span></span><br><span class="line">    <span class="keyword">int</span> times = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (times = <span class="number">0</span>; times &lt; TRY_TIMES; times++)&#123;</span><br><span class="line">        <span class="built_in">snprintf</span>(client_msg.msg, MSG_LEN - <span class="number">1</span>, <span class="string">"client_pid:%d\n"</span>, client_pid);</span><br><span class="line">        write(server_fifo_fd, &amp;client_msg, <span class="keyword">sizeof</span>(client_msg));</span><br><span class="line"></span><br><span class="line">        client_fifo_fd = open(client_fifo_name, O_RDONLY);</span><br><span class="line">        <span class="keyword">if</span> (client_fifo_fd &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            perror(<span class="string">"open client fifo error\n"</span>);</span><br><span class="line">            close(server_fifo_fd);</span><br><span class="line">            unlink(client_fifo_name);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> n = read(client_fifo_fd, &amp;client_msg, <span class="keyword">sizeof</span>(client_msg));</span><br><span class="line">        <span class="keyword">if</span> (n &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"reveive msg from server:%s"</span>, client_msg.msg);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        close(client_fifo_fd);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    close(server_fifo_fd);</span><br><span class="line">    unlink(client_fifo_name);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/16/LINUX系统编程-进程间通信练手/">linux系统编程-进程间通信练手</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
+  <p><span>发布时间:</span>2018年01月16日 - 14:01</p>
+  <p><span>最后更新:</span>2018年02月24日 - 11:02</p>
+  <p><span>原始链接:</span><a href="/2018/01/16/LINUX系统编程-进程间通信练手/" title="linux系统编程-进程间通信练手">http://hengliy.github.io/2018/01/16/LINUX系统编程-进程间通信练手/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/01/16/LINUX系统编程-进程间通信练手/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LINUX/" rel="tag"># linux</a>
+          
+            <a href="/tags/进程/" rel="tag"># 进程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/15/LINUX系统编程-进程控制/" rel="next" title="Linux系统编程-进程控制">
+                <i class="fa fa-chevron-left"></i> Linux系统编程-进程控制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/23/LINUX系统编程-信号/" rel="prev" title="linux系统编程-信号">
+                linux系统编程-信号 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/favicon.jpg"
+                alt="Hengliy" />
+            
+              <p class="site-author-name" itemprop="name">Hengliy</p>
+              <p class="site-description motion-element" itemprop="description">hold my heart</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Hengliy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hengliy_li@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#多进程拷贝大文件"><span class="nav-number">1.</span> <span class="nav-text">多进程拷贝大文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用FIFO实现本地聊天室"><span class="nav-number">2.</span> <span class="nav-text">使用FIFO实现本地聊天室</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#头文件"><span class="nav-number">2.1.</span> <span class="nav-text">头文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器"><span class="nav-number">2.2.</span> <span class="nav-text">服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端"><span class="nav-number">2.3.</span> <span class="nav-text">客户端</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hengliy</span>
+
+  
+</div>
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+</html>
