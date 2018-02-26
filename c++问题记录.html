@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/ >
+<script>
+    (function(){
+        if(''){
+            if (prompt('please entry article password') !== ''){
+                alert('password wrong!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content=",," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="c++多重继承中的内存布局 c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出">
+<meta name="keywords" content="面试,c&#x2F;c++">
+<meta property="og:type" content="website">
+<meta property="og:title" content="c++问题记录">
+<meta property="og:url" content="http://hengliy.github.io/c++问题记录.html">
+<meta property="og:site_name" content="Hengliy_Space">
+<meta property="og:description" content="c++多重继承中的内存布局 c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果pr">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-25T15:25:40.813Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++问题记录">
+<meta name="twitter:description" content="c++多重继承中的内存布局 c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果pr">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hengliy.github.io/c++问题记录.html"/>
+
+
+
+
+
+  <title>c++问题记录 | Hengliy_Space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hengliy_Space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">扎实的基础是最牛X的技术！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">c++问题记录</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <p><a href="http://blog.csdn.net/ithzhang/article/details/6672851" target="_blank" rel="noopener">c++多重继承中的内存布局</a></p>
+<h2 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h2><p>this指针，静态，复合，委托，继承，虚函数<br>迭代器，分配器， </p>
+<ol>
+<li>使用初始化列表</li>
+<li>善用const引用</li>
+<li></li>
+</ol>
+<p>数组的大小不必在编译时确定</p>
+<blockquote>
+<p>逗号表达式：逗号表达式的结果是其最右边表达式的值<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="number">4</span>,<span class="built_in">cout</span>&lt;&lt;<span class="number">5</span>;<span class="comment">//输出45;</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<hr>
+<p>fork();<br>1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。<br>2.如果printf函数最后没有”\n”，则输出缓冲区不会被立即清空，而fork函数会把输出缓冲区里的内容也都复制到子进程里。<br>所以，父进程和子进程各输出2个Hello，共4个。<br>如果第一个printf(“Hello”);写成printf(“Hello\n”);，则只会输出3个Hello，父进程2个，子进程1个。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;<span class="comment">//hello输出4次</span></span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">"Hello"</span>);</span><br><span class="line"> fork();</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">"Hello"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>z = x++ - –y <em> b/a;<br>上面这个式子，在C中其实是理解成 z = ((x++)–)-y </em> b / a;<br>所以其实是z = ((5++)–)-(-10)<em>2/4 = 5-(-5) = 10;<br>大家不要被题目故意留的空格迷惑了，编译器是不会理那些空格的，它看起来就是z=x++—y</em>b/a，而C语言读取符号时的词法分析遵循的规则叫“贪心法”，就它读取每一个符号都尽量包括多的字符，赋值号右边的式子从左往右读，第一个字符“x”，然后它会尝试读下一个字符看“x+”能不能组成一个符号，若不行，则读下一个字符，尝试“++”能不能组成一个符号，显然可以，然后再接着往下读“-”，尝试下一个字符“-”，发现“–”也能组成一个字符。<br>所以上式它会读成   z = ((x++)–)-y * b / a;</p>
+<blockquote>
+<p>构造函数放在private区 （Singleton）</p>
+<p>相同class的各个objects互为friends</p>
+<p>任何成员函数都有个隐藏的参数是  this</p>
+<p> 临时对象 return class(int x,int y); 不能用引用接受</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>重载输出运算符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ostream&amp; operator &lt;&lt; (ostream&amp; os,const complex&amp; x)</span><br><span class="line">&#123;</span><br><span class="line">	return os &lt;&lt; &apos;(&apos;&lt;&lt;real(x)&lt;&lt;&apos;,&apos;&lt;&lt;imag(x)&lt;&lt;&apos;)&apos;;//改变os状态</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<hr>
+<blockquote>
+<p>“a+=b”是不申请空间的，直接加给左边的a<br>“a=a+b”是要申请一个新的空间再赋值给a的</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>如果类里面有指针成员变量，必须有拷贝构造函数和拷贝赋值函数，<br>浅拷贝：不写拷贝构造函数，只复制指针，指向的区域没有变<br>深拷贝：拷贝构造函数，整个指针指向的值的区域都复制</p>
+</blockquote>
+<p><strong>拷贝构造</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span></span><br><span class="line">String::String(<span class="keyword">const</span> String&amp; str)</span><br><span class="line">&#123;</span><br><span class="line">   m_data = <span class="keyword">new</span> <span class="keyword">char</span>[ <span class="built_in">strlen</span>(str.m_data) + <span class="number">1</span> ];</span><br><span class="line">   <span class="built_in">strcpy</span>(m_data, str.m_data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>拷贝赋值</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span></span><br><span class="line">String&amp; String::<span class="keyword">operator</span>=(<span class="keyword">const</span> String&amp; str)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">if</span> (<span class="keyword">this</span> == &amp;str)<span class="comment">//检测自我赋值，不用进行下面的操作          </span></span><br><span class="line">      <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">delete</span>[] m_data;</span><br><span class="line">   m_data = <span class="keyword">new</span> <span class="keyword">char</span>[ <span class="built_in">strlen</span>(str.m_data) + <span class="number">1</span> ];</span><br><span class="line">   <span class="built_in">strcpy</span>(m_data, str.m_data);</span><br><span class="line">   <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="new-delete"><a href="#new-delete" class="headerlink" title="new/delete"></a>new/delete</h2><p><strong> Complex* pc=new Complex(1,2); </strong>               </p>
+<blockquote>
+<p>void<em> mem=operator new(sizeof(Complex));    //调用malloc分配内存<br>pc=static_cast&lt;complex</em>&gt;(mem);              //转型<br>pc-&gt;Complex::Complex(1,2);                  //构造函数</p>
+</blockquote>
+<p><strong> delete pc; </strong></p>
+<blockquote>
+<p>Complex::~Complex(pc);   //析构函数<br>operator delete(pc);     //调用free(pc),释放内存</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>复合的class，构造函数由内而外，析构函数由外而内</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>在 C 程序中，赋值运算符的优先级最低 （f）<br>逗号运算符的优先级最低</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>定义一个二维数组，可以省略第一维的定义，但不能省略第二维的定义。<br>系统根据初始化的数据个数和第2维的长度可以确定第一维的长度。<br>int a[][3]={ 1,2，3，4，5，6};<br>a数组的第一维的定义被省略，初始化数据共6个，第二维的长度为3，即每行3个数，所以a数组的第一维是2。<br>一般，省略第一维的定义时，第一维的大小按如下规则确定：<br>初值个数能被第二维整除，所得的商就是第一维的大小；若不能整除，则第一维的大小为商再加1。例如: int a[][3]={ 1,2,3,4};等价于：int a[2][3]={ 1,2,3,4};</p>
+</blockquote>
+<hr>
+<p>&gt;<br>char <em>strcpy(char</em> dest, const char <em>src)   把从src地址开始且含有NULL结束符的字符串复制到以dest开始的地址空间<br>void </em>memcpy(void <em>dest, const void </em>src, size_t n);    从源src所指的内存地址的起始位置开始拷贝n个字节到目标dest所指的内存地址的起始位置中<br>void <em>memmove( void</em> dest, const void<em> src, size_t count );   由src所指内存区域复制count个字节到dest所指内存区域。<br>void </em>memset(void *s, int ch,  size_t  n);   将s中当前位置后面的n个字节 （typedef unsigned int size_t ）用 ch 替换并返回 s</p>
+<hr>
+<blockquote>
+<p><strong>cdecl </strong>fastcall与<strong>stdcall，三者都是调用约定(Calling convention)，它决定以下内容：1)函数参数的压栈顺序，2)由调用者还是被调用者把参数弹出栈，3)以及产生函数修饰名的方法。<br>1、</strong>stdcall调用约定：函数的参数自右向左通过栈传递，被调用的函数在返回前清理传送参数的内存栈。<br>2、_cdecl是C和C++程序的缺省调用方式。每一个调用它的函数都包含清空堆栈的代码，所以产生的可执行文件大小会比调用_stdcall函数的大。函数采用从右到左的压栈方式。注意：对于可变参数的成员函数，始终使用<strong>cdecl的转换方式。<br>3、</strong>fastcall调用约定：它是通过寄存器来传送参数的（实际上，它用ECX和EDX传送前两个双字（DWORD）或更小的参数，剩下的参数仍旧自右向左压栈传送，被调用的函数在返回前清理传送参数的内存栈）。<br>4、thiscall仅仅应用于”C++”成员函数。this指针存放于CX寄存器，参数从右到左压。thiscall不是关键词，因此不能被程序员指定。<br>5、nakedcall采用1-4的调用约定时，如果必要的话，进入函数时编译器会产生代码来保存ESI，EDI，EBX，EBP寄存器，退出函数时则产生代码恢复这些寄存器的内容。naked call不产生这样的代码。naked call不是类型修饰符，故必须和_declspec共同使用。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>数组指针更像是指针的一个真子集，主要用于数组，所以范围更窄，而指针是可以用于数组乃至更广的地方，同时由于数组指针针对的是数组，所以有些方面可能会有特权（这是编译器实现的），比如使用sizeof（数组指针）和sizeof(指针），前者是数组长度*指针的范围（以字节为单位，win32程序就是4），而指针就只是指针的范围。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>c++中规定，重载运算符必须和用户定义的自定义类型的对象一起使用。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>在构造函数中需要初始化列表初始化的有如下三种情况<br>1.带有const修饰的类成员 ，如const int a ；<br>2.引用成员数据，如 int&amp; p;<br>3.带有引用的类变量，如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> &amp;a;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	A c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这里的c需要用初始化列表进行初始化。</p>
+<hr>
+<blockquote>
+<p>逻辑与（&amp;&amp;）和逻辑或（||）存在“短路”现象。逻辑运算符||,左侧为非零,右侧就不用判断了</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>c++不允许后加加多次 ++++i（T）;i++++（F）;</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>初始化指针时所创建的字符串常量被定义为只读char* str=”hello”;不能修改里面的字符</p>
+</blockquote>
+<hr>
+<h2 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h2><blockquote>
+<p>7&amp;3+12的值是15 （F）+优先级高于&amp;（按位与）</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>基本类型的对象没有析构函数，所以回收基本类型组成的数组空间用 delete 和 delete[] 都是应该可以的；但是对于类对象数组，只能用 delete[]。对于 new 的单个对象，只能用 delete 不能用 delete[] 回收空间。 </p>
+</blockquote>
+<hr>
+<blockquote>
+<p>在《C和指针》这本书里有介绍，int <em>p1=new int[10];该语句给指针p1分配内存，没有对指针初始化， int </em>p2=new int<a href="">10</a>;该语句给指针p2分配内存，并初始化指针*</p>
+</blockquote>
+<p>–</p>
+<blockquote>
+</blockquote>
+<hr>
+<h2 id="explict关键字-（类的强制类型转换）"><a href="#explict关键字-（类的强制类型转换）" class="headerlink" title="explict关键字 （类的强制类型转换）"></a>explict关键字 （类的强制类型转换）</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Fraction(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="comment">//不用定义返回值。</span></span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">double</span>)(m_numberator/m_denominator);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line"><span class="keyword">double</span> d=<span class="number">4</span>+f;<span class="comment">//会自动强制类型转换，因为定义了double的重载</span></span><br></pre></td></tr></table></figure>
+<p><strong>non-explicit-one-argument ctor</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Fraction(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	Fraction <span class="keyword">operator</span> + (<span class="keyword">const</span> Fraction&amp; f)&#123;</span><br><span class="line">		<span class="keyword">return</span> Fraction(...);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">Fraction d=f+<span class="number">4</span>;<span class="comment">//调用构造函数将4转换成Fraction(4,1);然后调用operator+</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>explicit</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span>//分数</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">explicit</span> <span class="title">Fraction</span><span class="params">(<span class="keyword">int</span> num,<span class="keyword">int</span> den=<span class="number">1</span>)</span><span class="comment">//加入关键字</span></span></span><br><span class="line">		:m_numberator(num),m_denominator(den)&#123;&#125;</span><br><span class="line">	Fraction <span class="keyword">operator</span> + (<span class="keyword">const</span> Fraction&amp; f)&#123;</span><br><span class="line">		<span class="keyword">return</span> Fraction(...);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numberator;<span class="comment">//分子</span></span><br><span class="line">	<span class="keyword">int</span> m_denominator;<span class="comment">//分母</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">Fraction d=f+<span class="number">4</span>;<span class="comment">//【Error】 不能转换</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">clss</span> <span class="title">shared_ptr</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">shared_ptr</span>(T* p):px(p) &#123;&#125;</span><br><span class="line">	T&amp; <span class="keyword">operator</span>*() <span class="keyword">const</span></span><br><span class="line">		&#123; <span class="keyword">return</span> * px;&#125;</span><br><span class="line">	T* <span class="keyword">operator</span>-&gt;() <span class="keyword">const</span></span><br><span class="line">		&#123; <span class="keyword">return</span> px;&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	T* px;</span><br><span class="line">	<span class="keyword">long</span>* pn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="STL"><a href="#STL" class="headerlink" title="STL"></a>STL</h2><p>C++ STL 的实现：<br>1.vector  底层数据结构为数组 ，支持快速随机访问<br>2.list    底层数据结构为双向链表，支持快速增删<br>3.deque   底层数据结构为一个中央控制器和多个缓冲区，详细见STL源码剖析P146，支持首尾（中间不能）快速增删，也支持随机访问<br>4.stack   底层一般用23实现，封闭头部即可，不用vector的原因应该是容量大小有限制，扩容耗时<br>5.queue   底层一般用23实现，封闭头部即可，不用vector的原因应该是容量大小有限制，扩容耗时<br>6.45是适配器,而不叫容器，因为是对容器的再封装<br>7.priority_queue 的底层数据结构一般为vector为底层容器，堆heap为处理规则来管理底层容器实现<br>8.set       底层数据结构为红黑树，有序，不重复<br>9.multiset  底层数据结构为红黑树，有序，可重复<br>10.map      ﻿﻿﻿﻿底层数据结构为红黑树，有序，不重复<br>11.multimap 底层数据结构为红黑树，有序，可重复<br>12.hash_set(unordered_set) ﻿﻿﻿﻿底层数据结构为hash表，无序，不重复<br>13.hash_multiset(unordered_multiset) 底层数据结构为hash表，无序，可重复<br>14.hash_map(unordered_map)      ﻿﻿﻿﻿底层数据结构为hash表，无序，不重复<br>15.hash_multimap(unordered_multimap) 底层数据结构为hash表，无序，可重复 </p>
+<hr>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p> volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素更改，比如：操作系统、硬件或者其它线程等。遇到这个关键字声明的变量，编译器对访问该变量的代码就不再进行优化，从而可以提供对特殊地址的稳定访问。声明时语法：int volatile vInt; 当要求使用 volatile 声明的变量的值的时候，系统总是重新从它所在的内存读取数据，即使它前面的指令刚刚从该处读取过数据。而且读取的数据立刻被保存。例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="keyword">int</span> i=<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> a = i;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 其他代码，并未明确告诉编译器，对 i 进行过操作</span></span><br><span class="line"><span class="keyword">int</span> b = i;</span><br></pre></td></tr></table></figure></p>
+<p>volatile 指出 i 是随时可能发生变化的，每次使用它的时候必须从 i的地址中读取，因而编译器生成的汇编代码会重新从i的地址读取数据放在 b 中。而优化做法是，由于编译器发现两次从 i读数据的代码之间的代码没有对 i 进行过操作，它会自动把上次读的数据放在 b 中。而不是重新从 i 里面读。这样以来，如果 i是一个寄存器变量或者表示一个端口数据就容易出错，所以说 volatile 可以保证对特殊地址的稳定访问。</p>
+<hr>
+<h2 id="多态与virtual"><a href="#多态与virtual" class="headerlink" title="多态与virtual"></a>多态与virtual</h2><p>C++的多态性用一句话概括就是：在基类的函数前加上virtual关键字，在派生类中重写该函数，运行时将会根据对象的实际类型来调用相应的函数。如果对象类型是派生类，就调用派生类的函数；如果对象类型是基类，就调用基类的函数</p>
+<p>  1：用virtual关键字申明的函数叫做虚函数，虚函数肯定是类的成员函数。  </p>
+<p>  2：存在虚函数的类都有一个一维的虚函数表叫做虚表，类的对象有一个指向虚表开始的虚指针。虚表是和类对应的，虚表指针是和对象对应的。  </p>
+<p>  3：多态性是一个接口多种实现，是面向对象的核心，分为类的多态性和函数的多态性。  </p>
+<p>  4：多态用虚函数来实现，结合动态绑定.  </p>
+<p>  5: 纯虚函数是虚函数再加上 = 0；  </p>
+<p>  6：抽象类是指包括至少一个纯虚函数的类。<br><strong>虚函数</strong></p>
+<p><strong>纯虚函数</strong><br>纯虚函数格式：virtual &lt;类型&gt; &lt;函数名&gt; (&lt;参数表&gt;) = 0;纯虚函数要以=0 结尾，并且virtual 放在最前面</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/favicon.jpg"
+                alt="Hengliy" />
+            
+              <p class="site-author-name" itemprop="name">Hengliy</p>
+              <p class="site-description motion-element" itemprop="description">hold my heart</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Hengliy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hengliy_li@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-c"><span class="nav-number">1.</span> <span class="nav-text">c/c++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new-delete"><span class="nav-number">2.</span> <span class="nav-text">new/delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运算符优先级"><span class="nav-number">3.</span> <span class="nav-text">运算符优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#explict关键字-（类的强制类型转换）"><span class="nav-number">4.</span> <span class="nav-text">explict关键字 （类的强制类型转换）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#智能指针"><span class="nav-number">5.</span> <span class="nav-text">智能指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">6.</span> <span class="nav-text">STL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">7.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态与virtual"><span class="nav-number">8.</span> <span class="nav-text">多态与virtual</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hengliy</span>
+
+  
+</div>
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/ >
+<script>
+    (function(){
+        if(''){
+            if (prompt('please entry article password') !== ''){
+                alert('password wrong!');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="normal," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="mutex互斥锁pthread_mutex_init()int pthread_mutex_init(pthread_mutex_t restrict mutex,const pthread_mutexattr_t restict attr)参数1：传参数restrict关键字：告诉概念一起，所有修改该指针指向内存中内">
+<meta name="keywords" content="normal">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统编程-进程同步">
+<meta property="og:url" content="http://hengliy.github.io/2018/01/24/LINUX系统编程-进程同步/index.html">
+<meta property="og:site_name" content="Hengliy_Space">
+<meta property="og:description" content="mutex互斥锁pthread_mutex_init()int pthread_mutex_init(pthread_mutex_t restrict mutex,const pthread_mutexattr_t restict attr)参数1：传参数restrict关键字：告诉概念一起，所有修改该指针指向内存中内容的操作，只能通过本指针完成，不能通过除本指针以外的其他变量或指针修改。 pth">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-26T08:36:47.309Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux系统编程-进程同步">
+<meta name="twitter:description" content="mutex互斥锁pthread_mutex_init()int pthread_mutex_init(pthread_mutex_t restrict mutex,const pthread_mutexattr_t restict attr)参数1：传参数restrict关键字：告诉概念一起，所有修改该指针指向内存中内容的操作，只能通过本指针完成，不能通过除本指针以外的其他变量或指针修改。 pth">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hengliy.github.io/2018/01/24/LINUX系统编程-进程同步/"/>
+
+
+
+
+
+  <title>Linux系统编程-进程同步 | Hengliy_Space</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hengliy_Space</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">扎实的基础是最牛X的技术！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hengliy.github.io/2018/01/24/LINUX系统编程-进程同步/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hengliy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengliy_Space">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux系统编程-进程同步</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T04:15:27+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NORMAL/" itemprop="url" rel="index">
+                    <span itemprop="name">normal</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="mutex互斥锁"><a href="#mutex互斥锁" class="headerlink" title="mutex互斥锁"></a>mutex互斥锁</h1><h2 id="pthread-mutex-init"><a href="#pthread-mutex-init" class="headerlink" title="pthread_mutex_init()"></a>pthread_mutex_init()</h2><p>int pthread_mutex_init(pthread_mutex_t <em>restrict mutex,const pthread_mutexattr_t </em>restict attr)<br>参数1：传参数<br>restrict关键字：告诉概念一起，所有修改该指针指向内存中内容的操作，只能通过本指针完成，不能通过除本指针以外的其他变量或指针修改。</p>
+<h2 id="pthread-mutex-destroy"><a href="#pthread-mutex-destroy" class="headerlink" title="pthread_mutex_destroy()"></a>pthread_mutex_destroy()</h2><h2 id="pthread-mutex-lock"><a href="#pthread-mutex-lock" class="headerlink" title="pthread_mutex_lock()"></a>pthread_mutex_lock()</h2><h2 id="pthread-mutex-trylock"><a href="#pthread-mutex-trylock" class="headerlink" title="pthread_mutex_trylock()"></a>pthread_mutex_trylock()</h2><h2 id="pthread-mutex-unlock"><a href="#pthread-mutex-unlock" class="headerlink" title="pthread_mutex_unlock()"></a>pthread_mutex_unlock()</h2><h2 id="pthread-mutex-t-类型（1或者0）"><a href="#pthread-mutex-t-类型（1或者0）" class="headerlink" title="pthread_mutex_t 类型（1或者0）"></a>pthread_mutex_t 类型（1或者0）</h2><h1 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h1><p>一把锁有三种状态：读锁，写锁，不加锁<br><strong>写独占，读共享，写锁优先级高</strong></p>
+<h2 id="pthread-rwlock-init"><a href="#pthread-rwlock-init" class="headerlink" title="pthread_rwlock_init()"></a>pthread_rwlock_init()</h2><h2 id="pthread-rwlock-destory"><a href="#pthread-rwlock-destory" class="headerlink" title="pthread_rwlock_destory()"></a>pthread_rwlock_destory()</h2><h2 id="pthread-rwlock-rdlock"><a href="#pthread-rwlock-rdlock" class="headerlink" title="pthread_rwlock_rdlock()"></a>pthread_rwlock_rdlock()</h2><h2 id="pthread-rwlock-wrlock"><a href="#pthread-rwlock-wrlock" class="headerlink" title="pthread_rwlock_wrlock()"></a>pthread_rwlock_wrlock()</h2><h2 id="pthread-rwlock-trywrlock"><a href="#pthread-rwlock-trywrlock" class="headerlink" title="pthread_rwlock_trywrlock()"></a>pthread_rwlock_trywrlock()</h2><h2 id="pthread-rwlock-unlock"><a href="#pthread-rwlock-unlock" class="headerlink" title="pthread_rwlock_unlock()"></a>pthread_rwlock_unlock()</h2><h2 id="pthread-rwlock-t-类型"><a href="#pthread-rwlock-t-类型" class="headerlink" title="pthread_rwlock_t 类型"></a>pthread_rwlock_t 类型</h2><h1 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h1><h2 id="pthread-cond-init"><a href="#pthread-cond-init" class="headerlink" title="pthread_cond_init()"></a>pthread_cond_init()</h2><h2 id="pthread-cond-destroy"><a href="#pthread-cond-destroy" class="headerlink" title="pthread_cond_destroy()"></a>pthread_cond_destroy()</h2><h2 id="pthread-cond-wait"><a href="#pthread-cond-wait" class="headerlink" title="pthread_cond_wait()"></a>pthread_cond_wait()</h2><p>阻塞等待一个变量<br>1、阻塞等待条件变量cond满足<br>2、释放已掌握的互斥锁，相当于pthread_unlock(&amp;mutex);<br>3、当被唤醒时候，pthread_cond_wait()函数返回时，接触阻塞并重新申请获取互斥锁pthread_mutex_lock(&amp;mutex)；</p>
+<h2 id="pthread-cond-timedwait"><a href="#pthread-cond-timedwait" class="headerlink" title="pthread_cond_timedwait()"></a>pthread_cond_timedwait()</h2><h2 id="pthread-cond-signal"><a href="#pthread-cond-signal" class="headerlink" title="pthread_cond_signal()"></a>pthread_cond_signal()</h2><h2 id="pthread-cond-broadcast"><a href="#pthread-cond-broadcast" class="headerlink" title="pthread_cond_broadcast()"></a>pthread_cond_broadcast()</h2><h2 id="pthread-cond-t-类型-用于定义条件变量"><a href="#pthread-cond-t-类型-用于定义条件变量" class="headerlink" title="pthread_cond_t 类型 用于定义条件变量"></a>pthread_cond_t 类型 用于定义条件变量</h2><h1 id="生产者消费者模型"><a href="#生产者消费者模型" class="headerlink" title="生产者消费者模型"></a>生产者消费者模型</h1><h1 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h1><p>多个线程间对某一对象的部分数据进行共享。<br>信号量的初值决定了线程的个数</p>
+<h2 id="sem-init"><a href="#sem-init" class="headerlink" title="sem_init()"></a>sem_init()</h2><h2 id="sem-destroy"><a href="#sem-destroy" class="headerlink" title="sem_destroy()"></a>sem_destroy()</h2><h2 id="sem-wait"><a href="#sem-wait" class="headerlink" title="sem_wait()"></a>sem_wait()</h2><h2 id="sem-trywait"><a href="#sem-trywait" class="headerlink" title="sem_trywait()"></a>sem_trywait()</h2><h2 id="sem-timedwait"><a href="#sem-timedwait" class="headerlink" title="sem_timedwait()"></a>sem_timedwait()</h2><h2 id="sem-post"><a href="#sem-post" class="headerlink" title="sem_post()"></a>sem_post()</h2><h2 id="sem-t"><a href="#sem-t" class="headerlink" title="sem_t"></a>sem_t</h2><h1 id="文件锁"><a href="#文件锁" class="headerlink" title="文件锁"></a>文件锁</h1><h2 id="int-fcntl-int-fd-int-cmd-…-arg"><a href="#int-fcntl-int-fd-int-cmd-…-arg" class="headerlink" title="int fcntl(int fd,int cmd,…/arg/)"></a>int fcntl(int fd,int cmd,…/<em>arg</em>/)</h2><p>F_SETLK(trylock,f非阻塞)<br>F_SETLKW(lock,阻塞)<br>F_GETLK</p>
+
+      
+    </div>
+    
+    
+    
+
+    <div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/01/24/LINUX系统编程-进程同步/">Linux系统编程-进程同步</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
+  <p><span>发布时间:</span>2018年01月24日 - 04:01</p>
+  <p><span>最后更新:</span>2018年02月26日 - 16:02</p>
+  <p><span>原始链接:</span><a href="/2018/01/24/LINUX系统编程-进程同步/" title="Linux系统编程-进程同步">http://hengliy.github.io/2018/01/24/LINUX系统编程-进程同步/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/01/24/LINUX系统编程-进程同步/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NORMAL/" rel="tag"># normal</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/23/新系统配置/" rel="next" title="新系统配置">
+                <i class="fa fa-chevron-left"></i> 新系统配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/24/LINUX系统编程-网络编程/" rel="prev" title="Linux系统编程-网络编程">
+                Linux系统编程-网络编程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/favicon.jpg"
+                alt="Hengliy" />
+            
+              <p class="site-author-name" itemprop="name">Hengliy</p>
+              <p class="site-description motion-element" itemprop="description">hold my heart</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Hengliy" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hengliy_li@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mutex互斥锁"><span class="nav-number">1.</span> <span class="nav-text">mutex互斥锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-mutex-init"><span class="nav-number">1.1.</span> <span class="nav-text">pthread_mutex_init()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-mutex-destroy"><span class="nav-number">1.2.</span> <span class="nav-text">pthread_mutex_destroy()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-mutex-lock"><span class="nav-number">1.3.</span> <span class="nav-text">pthread_mutex_lock()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-mutex-trylock"><span class="nav-number">1.4.</span> <span class="nav-text">pthread_mutex_trylock()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-mutex-unlock"><span class="nav-number">1.5.</span> <span class="nav-text">pthread_mutex_unlock()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-mutex-t-类型（1或者0）"><span class="nav-number">1.6.</span> <span class="nav-text">pthread_mutex_t 类型（1或者0）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#读写锁"><span class="nav-number">2.</span> <span class="nav-text">读写锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-rwlock-init"><span class="nav-number">2.1.</span> <span class="nav-text">pthread_rwlock_init()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-rwlock-destory"><span class="nav-number">2.2.</span> <span class="nav-text">pthread_rwlock_destory()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-rwlock-rdlock"><span class="nav-number">2.3.</span> <span class="nav-text">pthread_rwlock_rdlock()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-rwlock-wrlock"><span class="nav-number">2.4.</span> <span class="nav-text">pthread_rwlock_wrlock()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-rwlock-trywrlock"><span class="nav-number">2.5.</span> <span class="nav-text">pthread_rwlock_trywrlock()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-rwlock-unlock"><span class="nav-number">2.6.</span> <span class="nav-text">pthread_rwlock_unlock()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-rwlock-t-类型"><span class="nav-number">2.7.</span> <span class="nav-text">pthread_rwlock_t 类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条件变量"><span class="nav-number">3.</span> <span class="nav-text">条件变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-cond-init"><span class="nav-number">3.1.</span> <span class="nav-text">pthread_cond_init()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-cond-destroy"><span class="nav-number">3.2.</span> <span class="nav-text">pthread_cond_destroy()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-cond-wait"><span class="nav-number">3.3.</span> <span class="nav-text">pthread_cond_wait()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-cond-timedwait"><span class="nav-number">3.4.</span> <span class="nav-text">pthread_cond_timedwait()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-cond-signal"><span class="nav-number">3.5.</span> <span class="nav-text">pthread_cond_signal()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-cond-broadcast"><span class="nav-number">3.6.</span> <span class="nav-text">pthread_cond_broadcast()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pthread-cond-t-类型-用于定义条件变量"><span class="nav-number">3.7.</span> <span class="nav-text">pthread_cond_t 类型 用于定义条件变量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生产者消费者模型"><span class="nav-number">4.</span> <span class="nav-text">生产者消费者模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#信号量"><span class="nav-number">5.</span> <span class="nav-text">信号量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sem-init"><span class="nav-number">5.1.</span> <span class="nav-text">sem_init()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sem-destroy"><span class="nav-number">5.2.</span> <span class="nav-text">sem_destroy()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sem-wait"><span class="nav-number">5.3.</span> <span class="nav-text">sem_wait()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sem-trywait"><span class="nav-number">5.4.</span> <span class="nav-text">sem_trywait()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sem-timedwait"><span class="nav-number">5.5.</span> <span class="nav-text">sem_timedwait()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sem-post"><span class="nav-number">5.6.</span> <span class="nav-text">sem_post()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sem-t"><span class="nav-number">5.7.</span> <span class="nav-text">sem_t</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件锁"><span class="nav-number">6.</span> <span class="nav-text">文件锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#int-fcntl-int-fd-int-cmd-…-arg"><span class="nav-number">6.1.</span> <span class="nav-text">int fcntl(int fd,int cmd,…/arg/)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hengliy</span>
+
+  
+</div>
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+</html>
