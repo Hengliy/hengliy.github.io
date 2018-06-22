@@ -125,7 +125,7 @@
 <meta property="og:site_name" content="Hengliy_Space">
 <meta property="og:description" content="OPT：Optimal page replacement algorithm最佳页面替换算法。LRU：Least Recently Used 近期最少使用算法。MFU：Most Frequently Used最常使用页面置换算法LFU：Least Frequently Used最近最不常使用算法。 LRU和LFU是不同的! LRU是最近最少使用页面置换算法(Least Recently Used)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-24T22:37:18.728Z">
+<meta property="og:updated_time" content="2018-03-08T05:22:42.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="操作系统问题记录">
 <meta name="twitter:description" content="OPT：Optimal page replacement algorithm最佳页面替换算法。LRU：Least Recently Used 近期最少使用算法。MFU：Most Frequently Used最常使用页面置换算法LFU：Least Frequently Used最近最不常使用算法。 LRU和LFU是不同的! LRU是最近最少使用页面置换算法(Least Recently Used)">
@@ -395,7 +395,16 @@
 <p>LRU是最近最少使用页面置换算法(Least Recently Used),也就是首先淘汰最长时间未被使用的页面!<br>LFU是最近最不常用页面置换算法(Least Frequently Used),也就是淘汰一定时期内被访问次数最少的页!</p>
 <p>比如,第二种方法的时期T为10分钟,如果每分钟进行一次调页,主存块为3,若所需页面走向为2 1 2 1 2 3 4<br>注意,当调页面4时会发生缺页中断,若按LRU算法,应换页面1(1页面最久未被使用) 但按LFU算法应换页面3(十分钟内,页面3只使用了一次)可见LRU关键是看页面最后一次被使用到发生调度的时间长短,<br>而LFU关键是看一定时间段内页面被使用的频率!</p>
 <hr>
-<p><strong>Belady现象：</strong> 在分页式虚拟存储器管理中，发生缺页时的置换算法采用FIFO（ 先进先出 ）算法时，如果对—个进程未分配它所要求的全部页面，有时就会出现分配的页面数增多但缺页率反而提高的异常现象。</p>
+<p><strong>Belady现象：</strong> 在分页式虚拟存储器管理中，发生缺页时的置换算法采用FIFO（ 先进先出）算法时，如果对—个进程未分配它所要求的全部页面，有时就会出现分配的页面数增多但缺页率反而提高的异常现象。</p>
+<hr>
+<p>抖动就是指当内存中已无空闲空间而又发生缺页中断时，需要从内存中调出一页程序或数据送磁盘的对换区中，如果算法不适当，刚被换出的页很快被访问，需重新调入，因此需再选一页调出，而此时被换出的页很快又要被访问，因而又需将它调入，如此频繁更换页面，以致花费大量的<br>时间，我们称这种现象为”抖动”;所以在请求分页的时候如果处理不当则会发生抖动。</p>
+<hr>
+<p>临界资源是“互斥”共享资源</p>
+<hr>
+<p>dos是磁盘操作系统</p>
+<hr>
+<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><p><strong>进程与线程的选择取决以下几点：</strong><br>1、需要频繁创建销毁的优先使用线程；因为对进程来说创建和销毁一个进程代价是很大的。<br>2、线程的切换速度快，所以在需要大量计算，切换频繁时用线程，还有耗时的操作使用线程可提高应用程序的响应<br>3、因为对CPU系统的效率使用上线程更占优，所以可能要发展到多机分布的用进程，多核分布用线程；<br>4、并行操作时使用线程，如C/S架构的服务器端并发线程响应用户的请求；<br>5、需要更稳定安全时，适合选择进程；需要速度时，选择线程更好。<br>6、多核CPU，多核计算机本身就具有执行多线程的能力，如果使用单个线程，将无法重复利用计算资源，造成资源的巨大浪费。</p>
+<hr>
 
       
     </div>
@@ -415,7 +424,7 @@
   <p><span>本文标题:</span><a href="/2018/02/25/操作系统问题记录/">操作系统问题记录</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2018年02月25日 - 06:02</p>
-  <p><span>最后更新:</span>2018年02月25日 - 06:02</p>
+  <p><span>最后更新:</span>2018年03月08日 - 13:03</p>
   <p><span>原始链接:</span><a href="/2018/02/25/操作系统问题记录/" title="操作系统问题记录">http://hengliy.github.io/2018/02/25/操作系统问题记录/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/02/25/操作系统问题记录/"  aria-label="复制成功！"></i></span>
   </p>
@@ -527,8 +536,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -547,7 +565,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -558,7 +576,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -569,7 +587,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -608,6 +626,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程与线程"><span class="nav-number">1.</span> <span class="nav-text">进程与线程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -125,7 +125,7 @@
 <meta property="og:site_name" content="Hengliy_Space">
 <meta property="og:description" content="mutex互斥锁pthread_mutex_init()int pthread_mutex_init(pthread_mutex_t restrict mutex,const pthread_mutexattr_t restict attr)参数1：传参数restrict关键字：告诉概念一起，所有修改该指针指向内存中内容的操作，只能通过本指针完成，不能通过除本指针以外的其他变量或指针修改。 pth">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-26T08:36:47.309Z">
+<meta property="og:updated_time" content="2018-03-08T05:22:37.640Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux系统编程-进程同步">
 <meta name="twitter:description" content="mutex互斥锁pthread_mutex_init()int pthread_mutex_init(pthread_mutex_t restrict mutex,const pthread_mutexattr_t restict attr)参数1：传参数restrict关键字：告诉概念一起，所有修改该指针指向内存中内容的操作，只能通过本指针完成，不能通过除本指针以外的其他变量或指针修改。 pth">
@@ -395,6 +395,8 @@
 <h2 id="pthread-rwlock-init"><a href="#pthread-rwlock-init" class="headerlink" title="pthread_rwlock_init()"></a>pthread_rwlock_init()</h2><h2 id="pthread-rwlock-destory"><a href="#pthread-rwlock-destory" class="headerlink" title="pthread_rwlock_destory()"></a>pthread_rwlock_destory()</h2><h2 id="pthread-rwlock-rdlock"><a href="#pthread-rwlock-rdlock" class="headerlink" title="pthread_rwlock_rdlock()"></a>pthread_rwlock_rdlock()</h2><h2 id="pthread-rwlock-wrlock"><a href="#pthread-rwlock-wrlock" class="headerlink" title="pthread_rwlock_wrlock()"></a>pthread_rwlock_wrlock()</h2><h2 id="pthread-rwlock-trywrlock"><a href="#pthread-rwlock-trywrlock" class="headerlink" title="pthread_rwlock_trywrlock()"></a>pthread_rwlock_trywrlock()</h2><h2 id="pthread-rwlock-unlock"><a href="#pthread-rwlock-unlock" class="headerlink" title="pthread_rwlock_unlock()"></a>pthread_rwlock_unlock()</h2><h2 id="pthread-rwlock-t-类型"><a href="#pthread-rwlock-t-类型" class="headerlink" title="pthread_rwlock_t 类型"></a>pthread_rwlock_t 类型</h2><h1 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h1><h2 id="pthread-cond-init"><a href="#pthread-cond-init" class="headerlink" title="pthread_cond_init()"></a>pthread_cond_init()</h2><h2 id="pthread-cond-destroy"><a href="#pthread-cond-destroy" class="headerlink" title="pthread_cond_destroy()"></a>pthread_cond_destroy()</h2><h2 id="pthread-cond-wait"><a href="#pthread-cond-wait" class="headerlink" title="pthread_cond_wait()"></a>pthread_cond_wait()</h2><p>阻塞等待一个变量<br>1、阻塞等待条件变量cond满足<br>2、释放已掌握的互斥锁，相当于pthread_unlock(&amp;mutex);<br>3、当被唤醒时候，pthread_cond_wait()函数返回时，接触阻塞并重新申请获取互斥锁pthread_mutex_lock(&amp;mutex)；</p>
 <h2 id="pthread-cond-timedwait"><a href="#pthread-cond-timedwait" class="headerlink" title="pthread_cond_timedwait()"></a>pthread_cond_timedwait()</h2><h2 id="pthread-cond-signal"><a href="#pthread-cond-signal" class="headerlink" title="pthread_cond_signal()"></a>pthread_cond_signal()</h2><h2 id="pthread-cond-broadcast"><a href="#pthread-cond-broadcast" class="headerlink" title="pthread_cond_broadcast()"></a>pthread_cond_broadcast()</h2><h2 id="pthread-cond-t-类型-用于定义条件变量"><a href="#pthread-cond-t-类型-用于定义条件变量" class="headerlink" title="pthread_cond_t 类型 用于定义条件变量"></a>pthread_cond_t 类型 用于定义条件变量</h2><h1 id="生产者消费者模型"><a href="#生产者消费者模型" class="headerlink" title="生产者消费者模型"></a>生产者消费者模型</h1><h1 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h1><p>多个线程间对某一对象的部分数据进行共享。<br>信号量的初值决定了线程的个数</p>
 <h2 id="sem-init"><a href="#sem-init" class="headerlink" title="sem_init()"></a>sem_init()</h2><h2 id="sem-destroy"><a href="#sem-destroy" class="headerlink" title="sem_destroy()"></a>sem_destroy()</h2><h2 id="sem-wait"><a href="#sem-wait" class="headerlink" title="sem_wait()"></a>sem_wait()</h2><h2 id="sem-trywait"><a href="#sem-trywait" class="headerlink" title="sem_trywait()"></a>sem_trywait()</h2><h2 id="sem-timedwait"><a href="#sem-timedwait" class="headerlink" title="sem_timedwait()"></a>sem_timedwait()</h2><h2 id="sem-post"><a href="#sem-post" class="headerlink" title="sem_post()"></a>sem_post()</h2><h2 id="sem-t"><a href="#sem-t" class="headerlink" title="sem_t"></a>sem_t</h2><h1 id="文件锁"><a href="#文件锁" class="headerlink" title="文件锁"></a>文件锁</h1><h2 id="int-fcntl-int-fd-int-cmd-…-arg"><a href="#int-fcntl-int-fd-int-cmd-…-arg" class="headerlink" title="int fcntl(int fd,int cmd,…/arg/)"></a>int fcntl(int fd,int cmd,…/<em>arg</em>/)</h2><p>F_SETLK(trylock,f非阻塞)<br>F_SETLKW(lock,阻塞)<br>F_GETLK</p>
+<p>struct flock{</p>
+<p>}</p>
 
       
     </div>
@@ -414,7 +416,7 @@
   <p><span>本文标题:</span><a href="/2018/01/24/LINUX系统编程-进程同步/">Linux系统编程-进程同步</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2018年01月24日 - 04:01</p>
-  <p><span>最后更新:</span>2018年02月26日 - 16:02</p>
+  <p><span>最后更新:</span>2018年03月08日 - 13:03</p>
   <p><span>原始链接:</span><a href="/2018/01/24/LINUX系统编程-进程同步/" title="Linux系统编程-进程同步">http://hengliy.github.io/2018/01/24/LINUX系统编程-进程同步/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/01/24/LINUX系统编程-进程同步/"  aria-label="复制成功！"></i></span>
   </p>
@@ -470,8 +472,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/25/cmake学习/" rel="prev" title="cmake学习">
-                cmake学习 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/24/LINUX系统编程-网络编程/" rel="prev" title="Linux系统编程-网络编程">
+                Linux系统编程-网络编程 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -553,7 +555,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -564,7 +566,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -575,7 +577,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

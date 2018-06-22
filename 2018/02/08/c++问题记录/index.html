@@ -117,18 +117,18 @@
 
 
 
-<meta name="description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1">
+<meta name="description" content="c++多重继承中的内存布局 c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出">
 <meta name="keywords" content="面试,c&#x2F;c++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="c++问题记录">
 <meta property="og:url" content="http://hengliy.github.io/2018/02/08/c++问题记录/index.html">
 <meta property="og:site_name" content="Hengliy_Space">
-<meta property="og:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”">
+<meta property="og:description" content="c++多重继承中的内存布局 c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果pr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-24T22:30:39.091Z">
+<meta property="og:updated_time" content="2018-03-08T05:22:45.004Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="c++问题记录">
-<meta name="twitter:description" content="c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果printf函数最后没有”\n”">
+<meta name="twitter:description" content="c++多重继承中的内存布局 c/c++this指针，静态，复合，委托，继承，虚函数迭代器，分配器，   使用初始化列表 善用const引用   数组的大小不必在编译时确定  逗号表达式：逗号表达式的结果是其最右边表达式的值1cout&amp;lt;&amp;lt;4,cout&amp;lt;&amp;lt;5;//输出45;   fork();1.fork()函数会把它所在语句以后的语句复制到一个子进程里，单独执行。2.如果pr">
 
 
 
@@ -390,7 +390,8 @@
       
 
       
-        <h2 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h2><p>this指针，静态，复合，委托，继承，虚函数<br>迭代器，分配器， </p>
+        <p><a href="http://blog.csdn.net/ithzhang/article/details/6672851" target="_blank" rel="noopener">c++多重继承中的内存布局</a></p>
+<h2 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h2><p>this指针，静态，复合，委托，继承，虚函数<br>迭代器，分配器， </p>
 <ol>
 <li>使用初始化列表</li>
 <li>善用const引用</li>
@@ -503,7 +504,13 @@
 <h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p> volatile 关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素更改，比如：操作系统、硬件或者其它线程等。遇到这个关键字声明的变量，编译器对访问该变量的代码就不再进行优化，从而可以提供对特殊地址的稳定访问。声明时语法：int volatile vInt; 当要求使用 volatile 声明的变量的值的时候，系统总是重新从它所在的内存读取数据，即使它前面的指令刚刚从该处读取过数据。而且读取的数据立刻被保存。例如：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="keyword">int</span> i=<span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> a = i;</span><br><span class="line">...</span><br><span class="line"><span class="comment">// 其他代码，并未明确告诉编译器，对 i 进行过操作</span></span><br><span class="line"><span class="keyword">int</span> b = i;</span><br></pre></td></tr></table></figure></p>
 <p>volatile 指出 i 是随时可能发生变化的，每次使用它的时候必须从 i的地址中读取，因而编译器生成的汇编代码会重新从i的地址读取数据放在 b 中。而优化做法是，由于编译器发现两次从 i读数据的代码之间的代码没有对 i 进行过操作，它会自动把上次读的数据放在 b 中。而不是重新从 i 里面读。这样以来，如果 i是一个寄存器变量或者表示一个端口数据就容易出错，所以说 volatile 可以保证对特殊地址的稳定访问。</p>
 <hr>
-<h2 id="virtual"><a href="#virtual" class="headerlink" title="virtual"></a>virtual</h2><p><strong>虚函数</strong></p>
+<h2 id="多态与virtual"><a href="#多态与virtual" class="headerlink" title="多态与virtual"></a>多态与virtual</h2><p>C++的多态性用一句话概括就是：在基类的函数前加上virtual关键字，在派生类中重写该函数，运行时将会根据对象的实际类型来调用相应的函数。如果对象类型是派生类，就调用派生类的函数；如果对象类型是基类，就调用基类的函数</p>
+<p>  1：用virtual关键字申明的函数叫做虚函数，虚函数肯定是类的成员函数。  </p>
+<p>  2：存在虚函数的类都有一个一维的虚函数表叫做虚表，类的对象有一个指向虚表开始的虚指针。虚表是和类对应的，虚表指针是和对象对应的。  </p>
+<p>  3：多态性是一个接口多种实现，是面向对象的核心，分为类的多态性和函数的多态性。  </p>
+<p>  4：多态用虚函数来实现，结合动态绑定.  </p>
+<p>  5: 纯虚函数是虚函数再加上 = 0；  </p>
+<p>  6：抽象类是指包括至少一个纯虚函数的类。<br><strong>虚函数</strong></p>
 <p><strong>纯虚函数</strong><br>纯虚函数格式：virtual &lt;类型&gt; &lt;函数名&gt; (&lt;参数表&gt;) = 0;纯虚函数要以=0 结尾，并且virtual 放在最前面</p>
 
       
@@ -524,7 +531,7 @@
   <p><span>本文标题:</span><a href="/2018/02/08/c++问题记录/">c++问题记录</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
   <p><span>发布时间:</span>2018年02月08日 - 22:02</p>
-  <p><span>最后更新:</span>2018年02月25日 - 06:02</p>
+  <p><span>最后更新:</span>2018年03月08日 - 13:03</p>
   <p><span>原始链接:</span><a href="/2018/02/08/c++问题记录/" title="c++问题记录">http://hengliy.github.io/2018/02/08/c++问题记录/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2018/02/08/c++问题记录/"  aria-label="复制成功！"></i></span>
   </p>
@@ -582,8 +589,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/24/LINUX系统编程-进程同步/" rel="prev" title="Linux系统编程-进程同步">
-                Linux系统编程-进程同步 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/02/24/hello-world/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -665,7 +672,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -676,7 +683,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -687,7 +694,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -736,7 +743,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-c"><span class="nav-number">1.</span> <span class="nav-text">c/c++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new-delete"><span class="nav-number">2.</span> <span class="nav-text">new/delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运算符优先级"><span class="nav-number">3.</span> <span class="nav-text">运算符优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#explict关键字-（类的强制类型转换）"><span class="nav-number">4.</span> <span class="nav-text">explict关键字 （类的强制类型转换）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#智能指针"><span class="nav-number">5.</span> <span class="nav-text">智能指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">6.</span> <span class="nav-text">STL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">7.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#virtual"><span class="nav-number">8.</span> <span class="nav-text">virtual</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-c"><span class="nav-number">1.</span> <span class="nav-text">c/c++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new-delete"><span class="nav-number">2.</span> <span class="nav-text">new/delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运算符优先级"><span class="nav-number">3.</span> <span class="nav-text">运算符优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#explict关键字-（类的强制类型转换）"><span class="nav-number">4.</span> <span class="nav-text">explict关键字 （类的强制类型转换）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#智能指针"><span class="nav-number">5.</span> <span class="nav-text">智能指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STL"><span class="nav-number">6.</span> <span class="nav-text">STL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">7.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态与virtual"><span class="nav-number">8.</span> <span class="nav-text">多态与virtual</span></a></li></ol></div>
             
 
           </div>
