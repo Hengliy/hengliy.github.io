@@ -10,8 +10,8 @@
   <meta charset="UTF-8"/ >
 <script>
     (function(){
-        if(''){
-            if (prompt('please entry article password') !== ''){
+        if('20190401'){
+            if (prompt('please entry article password') !== '20190401'){
                 alert('password wrong!');
                 history.back();
             }
@@ -106,7 +106,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="诗," />
 
 
 
@@ -117,19 +117,18 @@
 
 
 
-<meta name="description" content="os老师带着做一个虚拟机的项目，暑假被《操作系统革命》和《硅谷》洗脑了，发觉系统工程师才是真hacker，这次就兴致勃勃追随田老师啦！按照老师说的是我们要做的是一个在实体机里面监控虚拟机的软件，感觉是一个上帝视角，很厉害的样子，用到vmi虚拟机自省技术，需要储备这方面知识，这次慢慢来不要急。  老师让用的是xen+wx">
+<meta name="description" content="转正答辩啦">
+<meta name="keywords" content="诗">
 <meta property="og:type" content="article">
-<meta property="og:title" content="xen&amp;kvm虚拟化原理学习">
-<meta property="og:url" content="http://hengliy.github.io/2017/09/12/XEN-KVM虚拟机原理学习/index.html">
+<meta property="og:title" content="试用期">
+<meta property="og:url" content="http://hengliy.github.io/2019/11/16/转正答辩结束/index.html">
 <meta property="og:site_name" content="Hengliy_Space">
-<meta property="og:description" content="os老师带着做一个虚拟机的项目，暑假被《操作系统革命》和《硅谷》洗脑了，发觉系统工程师才是真hacker，这次就兴致勃勃追随田老师啦！按照老师说的是我们要做的是一个在实体机里面监控虚拟机的软件，感觉是一个上帝视角，很厉害的样子，用到vmi虚拟机自省技术，需要储备这方面知识，这次慢慢来不要急。  老师让用的是xen+wxwidgets+openstone，不知道为什么要用几个不是很流行的平台（年龄">
+<meta property="og:description" content="转正答辩啦">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://hengliy.github.io/2017/09/12/XEN-KVM虚拟机原理学习/2018-02-2405-29-45.png">
-<meta property="og:updated_time" content="2018-02-24T11:03:14.338Z">
+<meta property="og:updated_time" content="2019-11-16T08:41:46.094Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="xen&amp;kvm虚拟化原理学习">
-<meta name="twitter:description" content="os老师带着做一个虚拟机的项目，暑假被《操作系统革命》和《硅谷》洗脑了，发觉系统工程师才是真hacker，这次就兴致勃勃追随田老师啦！按照老师说的是我们要做的是一个在实体机里面监控虚拟机的软件，感觉是一个上帝视角，很厉害的样子，用到vmi虚拟机自省技术，需要储备这方面知识，这次慢慢来不要急。  老师让用的是xen+wxwidgets+openstone，不知道为什么要用几个不是很流行的平台（年龄">
-<meta name="twitter:image" content="http://hengliy.github.io/2017/09/12/XEN-KVM虚拟机原理学习/2018-02-2405-29-45.png">
+<meta name="twitter:title" content="试用期">
+<meta name="twitter:description" content="转正答辩啦">
 
 
 
@@ -159,13 +158,13 @@
 
 
 
-  <link rel="canonical" href="http://hengliy.github.io/2017/09/12/XEN-KVM虚拟机原理学习/"/>
+  <link rel="canonical" href="http://hengliy.github.io/2019/11/16/转正答辩结束/"/>
 
 
 
 
 
-  <title>xen&kvm虚拟化原理学习 | Hengliy_Space</title>
+  <title>试用期 | Hengliy_Space</title>
   
 
 
@@ -302,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hengliy.github.io/2017/09/12/XEN-KVM虚拟机原理学习/">
+    <link itemprop="mainEntityOfPage" href="http://hengliy.github.io/2019/11/16/转正答辩结束/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Hengliy">
@@ -319,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">xen&kvm虚拟化原理学习</h1>
+          <h1 class="post-title" itemprop="name headline">试用期</h1>
         
 
         <div class="post-meta">
@@ -331,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T10:14:21+08:00">
-                2017-09-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-16T15:15:23+08:00">
+                2019-11-16
               </time>
             
 
@@ -342,6 +341,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/历险记/" itemprop="url" rel="index">
+                    <span itemprop="name">历险记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -354,6 +375,10 @@
 
           
 
+          
+              <div class="post-description">
+                  转正答辩啦
+              </div>
           
 
         </div>
@@ -369,26 +394,9 @@
       
 
       
-        <blockquote>
-<p>os老师带着做一个虚拟机的项目，暑假被《操作系统革命》和《硅谷》洗脑了，发觉系统工程师才是真hacker，这次就兴致勃勃追随田老师啦！按照老师说的是我们要做的是一个在实体机里面监控虚拟机的软件，感觉是一个上帝视角，很厉害的样子，用到vmi虚拟机自省技术，需要储备这方面知识，这次慢慢来不要急。</p>
-</blockquote>
-<p>老师让用的是xen+wxwidgets+openstone，不知道为什么要用几个不是很流行的平台（年龄大？）。</p>
-<h2 id="xen虚拟化"><a href="#xen虚拟化" class="headerlink" title="xen虚拟化"></a>xen虚拟化</h2><blockquote>
-<p>XEN 虚拟化技术的主要特性如下所示：</p>
-</blockquote>
-<p>◆  虚拟机的性能更接近真实的硬件平台；</p>
-<p>◆  可实现物理平台和虚拟平台间的自由切换；</p>
-<p>◆  在每个客户虚拟机支持到 32个虚拟CPU，通过VCPU热插拔；</p>
-<p>◆  支持PAE指令集的x86/32, x86/64平台；</p>
-<p>◆  能通过硬件辅助虚拟技术进行虚拟原始操作系统，可支持Microsoft Windows虚拟；</p>
-<p>◆  得到广泛的硬件厂家的大力支持，支持几乎所有的Linux设备驱动。</p>
-<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>Xen通过hypervisor软件层来访问物理硬件，实现在一台单独的计算机上运行多个各自独立彼此隔离的子操作系统。hypervisor扮演着类似交通警察的角色，指挥硬件访问和协调来自各子操作系统的请求。<br>在Xen环境中，主要有两个组成部分。 一个是虚拟机监控器（VMM），也叫hypervisor。Hypervisor层硬件与虚拟机之间，最先被载入到硬件的第一层。 Hypervisor载入就可部署虚拟机。在Xen中，虚拟机叫做Domain。在这些虚拟机中，Domain0具有很高的特权,负责一些专门的工作。由于hypervisor中不包含任何与硬件对话的驱动，也没有与管理员对话的接口，这些驱动就由 domain0来提供了。通过domain0，管理员可以利用一些Xen工具来创建其它虚拟机（DomainU）。这些domainU属于无特权domain。<br>在domain0中，还会载入一个xend进程。这个进程会管理所有其它虚拟机，并提供这些虚拟机控制台的访问。在创建虚拟机时，管理员使用配置程序与domain0直接对话。</p>
-<p><img src="2018-02-2405-29-45.png" alt=""></p>
-<p>当启动一个用户VM(DomU)时, 该VM所需的CPU和内存都有Xen Hypervisor提供,而它若需要使用IO设备时,则向特权VM<br>发起请求,特权VM(Dom0)会为该用户VM创建一个模拟的硬件设备线程,并运行于特权VM的用户空间,当用户VM向该IO硬件<br>发起调用时,特权VM上相应的模拟设备接收请求并将其转化为特权VM对IO硬件的操作,交给特权VM的内核来代为<br>完成其操作。这里需注意这些虚拟IO硬件需要由Qemu来模拟,Xen本身并没有提供相应的模拟功能。<br>(注：特权VM的CPU和内存也是有Xen Hypervisor提供.)<br>&nbsp; <br>Qemu模拟IO设备(完全虚拟化方式): 假如用户VM向特权VM请求磁盘,特权VM可以将一个分区、文件等,<br>通过Qemu将其模拟成一个磁盘设备,就拿文件来说,特权VM先创建一个映像文件,再通过Qemu为该文件模拟一个磁盘控制器芯片,然后,将其映射到用户VM上,当然模拟的这个磁盘控制器芯片一定是一个最常见的,用户VM的Kernel一定支持的,但需注意: 模拟的磁盘可能会与实际的物理磁盘不同,因为要尽可能兼容。这样一来用户VM假如要写数据到磁盘的过程如下：<br>用户VM-APP—&gt;用户VM-Kernel调用虚拟磁盘的驱动进行写数据前的准备<br>(如:数据写入到磁盘中的扇区位置/数据编码等)—&gt;<br>用户VM-Kernel将编码后的信息发给特权VM的模拟磁盘进程—&gt;<br>特权VM的模拟磁盘进程再将编号信息还原后发给特权VM-kernel—&gt;<br>特权VM-kernel调用真实物理磁盘的驱动对数据进行写前准备—&gt;最后磁盘驱动调度磁盘完成写入.<br>Xen向Domain提供了一个抽象层，其中包含了管理和虚拟硬件的API。Domain 0内部包含了真实的设备驱动（原生设备驱动），可直接访问物理硬件，Xen 提供的管理 API 可与其交互，并通过用户模式下的管理工具(如：xm/xend、xl等)来管理 Xen 的虚拟机环境。</p>
-<p>补充概念：</p>
-<h3 id="完全虚拟化："><a href="#完全虚拟化：" class="headerlink" title="完全虚拟化："></a>完全虚拟化：</h3><p>CPU、内存不做模拟, 只对其进行分配和管理, 可通过BT, HVM等技术进行加速, 只能模拟本机CPU; 著名的软件: VMWare Workstation, VirtualBox, KVM…</p>
-<h3 id="半虚拟化："><a href="#半虚拟化：" class="headerlink" title="半虚拟化："></a>半虚拟化：</h3><p>在底层硬件上安装VMM(Virtual Machines Monitor)来管理各虚拟机, 各虚拟机的内核需要修改, 从而知道自己是虚拟机, 通过特殊方式调用驱动和特权指令; 著名的软件: Xen, VMWare ESXI, UML …</p>
-<p>也就是说我们我们的ubuntu被换成了xen的内核，并作为Domain0，我们的项目就是运行在Domain0上面，对gust虚拟机进行自省。</p>
+        <p>略略略，转正答辩结束啦。“已经是正式员工了，你要开始对得起公司给你的工资哦”。<br>或许今后的阶段性将越来越少吧，希望能对工作后的转变与适应好好的梳理。</p>
+<p>刚来的时候，给我分配到项锐（项总）组，觉得还是很喜欢的，因为是做体系结构与虚拟化相关的东西，然后给安排了陈健康做我师傅，也很巧，健康本科也是合工大的，硕士在中科大读的，<br>还记得他问我“你合工大的，为啥不考研呢，考个中科大的研究生不是很好玩么”。我：“🙄”。之后的的两周师傅让我过考试，看linux基础知识。两周后，还让我继续看，每周我让他给我安排工作，他就问我一个新的东西有没有看过，我说还不懂，他说那就去看啊。。。就这样看了一个半月，项总看不下去了，就给我安排了一个测试需求。终于能写代码了，小激动。给我说“给1910上搭一个D项目的每日构建CI”。我：“？？？，什么是1910？什么是D项目？什么是每日构建？什么是CI？给哪搭建？在哪搭建？用什么搭建？”。然后就一点一点往前摸索，一度走偏，把搭建CI环境的需求，被我给做成了测试套的编写，还好只浪费了一两天的时间🙄。遇见的最大一个坑就是device侧需要用root，我调了好几天硬是解决不了这个问题，问了才知道需要用root用户。我：“这么重要的配置，为啥README中不写？？？”。吭哧吭哧写了半个月才写完。（这种框架交给测试组分分钟写完，算一下工资，觉得对不起公司😏）。<br>然后没活了，师傅让我继续看书，对之前看的东西进行一个总结，给新员工讲一下，也算是一个输出（公司是真的重视输出，不能没有量化的指标呀）。第一次加班到23:30做的东西，结果独自一人在会议室讲完了（线上28人）。<br>之后就让我去做idr了，我师傅在做smmu期间发现的hongmeng的一个性能空间。我就摩拳擦掌啊，准备大干一场。没想到生活上出了事。然后就进展十分缓慢，吭哧吭哧的做，每天的效率只有之前的1/3。在这个过程中根本没有注意一个事情的严重性，那就是“自研”。我师傅一直告诉我的原话就是“你去看看linux怎么做的，再自己想一想”（后来发现他们smmu就这么实现的，直到今天，他们的还没上库，真是有点担心啊）。再加上王海告诉我的他们开发的流程都是把linux 的拿过来放在hongmeng里直接跑一边，然后对他进行修改。我也就没把自研当回事，所以开发过程中，就哪不会了就去linux看一看，参考一下。就这样写了快两个月吧。。。才写完。然后测试上库又用了整个10月🙄。效率低的令人发指（算一个工资，又觉得对不起公司）。结果上库后SE（泽凡大佬）和项总才问我：“这个没有参考linux吧？”。我。。。。。。。。。我说“会有点linux的影子，但不是抄的”。就这样上库了，上库了，上，库，了！我心想这样就没问题了吧，结果后面测试和文件系统那边的人就呼我两次，向我请教这个怎么实现的，文件系统的说他们当初也想自己实现一个radix-tree，但是怎么都跳脱不出linux的算法框架，linux的那种实现方式已经是最优解了。问我怎么实现的，我如实说了又参考，他就问我这个当我们开源出去后，全世界一定有很多人对比你这个代码和linux的区别的，不能有开源风险，问我有没有人看过，我说我们SE看过，他说：“哦，那泽凡看过的话就没问题了”。我：“？？？大佬的脸这么管用嘛？”。现在心里还是不踏实，等后面有进一步优化的机会，一定要对radix-tree进行大改。这一次让我深刻意识到了什么叫“自研”。hongmeng可是“国产自研”的啊！<br>idr翻篇后，项总让我再做一个需求，这样答辩就没问题了。这时候自己生活上也慢慢恢复过来了，也想好好拼一把，把之前落下来的补回来。（所以idr就是我生活阴影下的产物，说真的这个后面被上车，上手机了，我真的不放心啊，毕竟是基础软件，一点风险都不能有）。后面自告奋勇的去做“SC_CTRL寄存器权限加固与统一管理”这个需求，没想到也是个坑啊（难道每个需求都会有大坑？有经验的人都懂得避让？）。这个需求是楠哥提出来的（王楠，hongmeng架构师）。我以为项总了解，项总就说怎样怎样，我就去学习hongmeng架构然后开发，第一版demo出来后，我就给项总看，项总说“我觉得没问题，就这样开发吧”。我觉得这个需求如果按照这样的理解的话有点奇怪，似乎没有什么太大的用。要不和楠哥对一对，项总给我一种“人家是架构师，很忙的好吗”的感觉。我只能选择去找CBD会议上的别人去对，才发现走偏了。然后就又重新开发，重新写了个demo出来，然后去和项总对，他觉得没问题。我。。。。“还是找楠哥对一下吧”。守株待兔似的等到楠哥的espace红点变绿赶紧给他发消息。楠哥说完，我才理解了，？？？就不是我们理解的那么回事。。。趁着上周楠哥到杭州出差进一步对了一下才发现，这个需求还是蛮大的。走了很多弯路，写了两个没用的demo，答辩前也没做完，预答辩我给项总道歉，说自己之前状态不好，后面会加把劲赶上的，项总也说不是我一个人的责任。。。。。。<br>就这样答辩了，感觉我的试用期就是不断的折腾踩坑中度过的。。。有很多教训值得好好学习。今天是周六，公司还有一半人在加班，其实并没有人催他们，但是依然来了，我不知道他们因为什么，或许已经成为一种习惯吧。加油，华为。加油，李恒，希望尽快对得起公司给发的钱。</p>
+<p>回到生活，真的失恋后过的一团糟，刚来杭州的时候雄心勃勃，觉得自己在一个最完美的状态，做着自己喜欢的工作，有着最棒的伴侣，又处在一个千载难逢的机遇点上，也在年轻最有力量的时刻，欣慰自己之前做的所有选择，一定要好好干一场。没想到一个分手就足以把我这一切美好崩塌，那时候才发现原来自己是如此的不独立。每天浑浑噩噩，生活上不再有别人打扰自己，只有自己与自己交流，慢慢走出阴影习惯独居后才开始了真正的自我认知。接受了“内在 &gt; 外在”的重要性，发现了原则，清晰了人格。也十分感谢soul陪伴我度过每个失眠的漫漫长夜，认识了形形色色的人，也与各种各样的人交流了形而上的东西，才发现自己之前种种观点的片面，才发现生活的本质。最后希望能尽快找到自己的独立的积极的节奏，潇洒高效。</p>
 
       
     </div>
@@ -405,12 +413,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2017/09/12/XEN-KVM虚拟机原理学习/">xen&kvm虚拟化原理学习</a></p>
+  <p><span>本文标题:</span><a href="/2019/11/16/转正答辩结束/">试用期</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Hengliy 的个人博客">Hengliy</a></p>
-  <p><span>发布时间:</span>2017年09月12日 - 10:09</p>
-  <p><span>最后更新:</span>2018年02月24日 - 19:02</p>
-  <p><span>原始链接:</span><a href="/2017/09/12/XEN-KVM虚拟机原理学习/" title="xen&kvm虚拟化原理学习">http://hengliy.github.io/2017/09/12/XEN-KVM虚拟机原理学习/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2017/09/12/XEN-KVM虚拟机原理学习/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年11月16日 - 15:11</p>
+  <p><span>最后更新:</span>2019年11月16日 - 16:11</p>
+  <p><span>原始链接:</span><a href="/2019/11/16/转正答辩结束/" title="试用期">http://hengliy.github.io/2019/11/16/转正答辩结束/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://hengliy.github.io/2019/11/16/转正答辩结束/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -439,6 +447,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/诗/" rel="tag"># 诗</a>
+          
+        </div>
+      
 
       
       
@@ -448,8 +462,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/20/刷题常用函数/" rel="next" title="刷题常用函数">
-                <i class="fa fa-chevron-left"></i> 刷题常用函数
+              <a href="/2019/09/28/what is love/" rel="next" title="廊桥遗梦">
+                <i class="fa fa-chevron-left"></i> 廊桥遗梦
               </a>
             
           </div>
@@ -457,10 +471,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/15/虚拟机自省与LIBVMI库学习/" rel="prev" title="虚拟机自省与libvmi库学习">
-                虚拟机自省与libvmi库学习 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -512,17 +522,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -602,22 +603,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#xen虚拟化"><span class="nav-number">1.</span> <span class="nav-text">xen虚拟化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理："><span class="nav-number">1.1.</span> <span class="nav-text">原理：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完全虚拟化："><span class="nav-number">1.2.</span> <span class="nav-text">完全虚拟化：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半虚拟化："><span class="nav-number">1.3.</span> <span class="nav-text">半虚拟化：</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
